@@ -18,8 +18,10 @@ public class Post {
     @Column(name="id_publicacion")
     private String idPost;
     @ManyToOne
+    @JoinColumn(name="id_cuenta")
     private Account account;
     @ManyToOne
+    @JoinColumn(name="id_lugares")
     private Place place;
     @Column(name="precio_productos")
     private double priceProduct;
