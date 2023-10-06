@@ -1,13 +1,17 @@
 package com.project.software.camgro.Camgro.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Table
 @Entity(name="publicaciones")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
 
     @Id
