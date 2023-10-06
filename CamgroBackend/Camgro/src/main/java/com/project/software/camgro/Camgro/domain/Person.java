@@ -1,19 +1,27 @@
 package com.project.software.camgro.Camgro.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity(name = "personas")
+@Entity
 @Table(name = "personas")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
 
     @Id
-    private String id_personas;
-    private String nombre_personas;
-    private String telefono;
-    private String direccion;
+    private String id;
+    @Column(name = "id_personas")
+    private String name;
+    @Column(name = "telefono")
+    private String phone;
+    @Column(name = "direccion")
+    private String address;
+    @ManyToOne
+    @JoinColumn(name = "id_lugar_residencia")
+    private Place place;
 }
