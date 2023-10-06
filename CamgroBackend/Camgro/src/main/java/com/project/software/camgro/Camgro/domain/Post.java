@@ -37,6 +37,4 @@ public class Post {
     private String measureUnit;
     @Column(name="estado_publicacion")
     private String postStatus;
-
-
 }
