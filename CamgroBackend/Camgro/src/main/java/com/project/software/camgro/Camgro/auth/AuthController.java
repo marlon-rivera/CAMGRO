@@ -1,6 +1,9 @@
 package com.project.software.camgro.Camgro.auth;
 
-import com.project.software.camgro.Camgro.domain.Person;
+import com.project.software.camgro.Camgro.auth.AuthResponse;
+import com.project.software.camgro.Camgro.auth.AuthService;
+import com.project.software.camgro.Camgro.auth.LoginRequest;
+import com.project.software.camgro.Camgro.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,13 +20,11 @@ public class AuthController {
 
     @PostMapping(value ="login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest){
-
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping(value = "regster")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest){
-
         return ResponseEntity.ok(authService.register(registerRequest));
     }
 

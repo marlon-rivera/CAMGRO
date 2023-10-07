@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 public class Person {
 
     @Id
-    private String id;
     @Column(name = "id_personas")
+    private String id;
+    @Column(name =  "nombre_personas")
     private String name;
     @Column(name = "telefono")
     private String phone;
