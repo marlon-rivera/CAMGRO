@@ -1,10 +1,11 @@
-import Header from "./Header";
-function App() {
+import Login from "./Login";
 
+function App() {
 	return (
 		<div className='App'>
-			<Header />
+			<Login/>
 		</div>
-)};
+	);
+}
 
 export default App;

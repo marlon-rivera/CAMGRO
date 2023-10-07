@@ -1,0 +1,24 @@
+@import url('./variables.css');
+.container{
+    display: flex;
+    width: 20.5vw;
+    border-radius: 10%/50%;
+    border: 2px solid rgb(var(--color-verde-boton));
+}
+.containerImage{
+    background-color: rgba(var(--color-verde-boton), 50%);
+    padding: 0.5vw;
+    border-radius: 50%;
+}
+.input{
+    width: 15vw;
+    border-radius: 10%/50%;
+    border: none;
+    margin-left: 5px;
+    background-color: transparent;
+    color: white;
+}
+.input:focus{
+    border: none;
+    outline: none;
+}

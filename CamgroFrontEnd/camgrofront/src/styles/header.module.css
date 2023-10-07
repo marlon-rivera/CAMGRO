@@ -1,18 +1,23 @@
-.header{
-    background-color: var(--color-verde-fondo);
-    opacity: 0.5;
+@import url('./variables.css');
+.header {
+	background: rgba(var(--color-verde-fondo), 0.5);
+	padding-top: 10px;
 }
-.header ul li button {
-    z-index: -1;
+.logo {
+	width: 10vw;
+}
+nav {
+	display: flex;
+	align-items: center;
 }
 nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
 }
 
 nav ul li {
-    float: left;
+	float: left;
+	margin: 0.2vw;
 }
-

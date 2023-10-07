@@ -1,0 +1,23 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 110px;
+}
+.info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 30px;
+}
+h1 {
+	font-size: 5vw;
+	color: white;
+	font-family: 'Leelawadee UI';
+}
+h2 {
+	font-size: 3vw;
+	color: white;
+	font-family: 'Leelawadee UI';
+}

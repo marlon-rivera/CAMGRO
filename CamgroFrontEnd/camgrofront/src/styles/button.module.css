@@ -1,36 +1,42 @@
 @import url(./variables.css);
-.button{
-    background: white;
-    width: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    border-color: var(--color-verde-boton);
-    cursor: pointer;
-
+.button {
+	background: white;
+	width: 13vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	border-color: rgb(var(--color-verde-boton));
+	cursor: pointer;
 }
-.img{
-    border-radius: 40%/50% ;
-    padding: 3px 6px;
-    background-color: var(--color-verde-boton);
-    margin: 2px 8px 2px -3px;
+.img {
+	border-radius: 40%/50%;
+	padding: 3px 6px;
+	background-color: rgb(var(--color-verde-boton));
+	margin: 0.2vw 0.8vw 0.2vw -0.1vw;
 }
-.text{
-    font-family: 'Century Gothic';
-    color: var(--color-verde-boton);
-    font-size: 18px;
+.text {
+	font-family: 'Century Gothic';
+	color: rgb(var(--color-verde-boton));
+	font-size: 1.5vw;
 }
-.button:hover{
-    background-color: var(--color-verde-boton);
-    border-color: white;
+.button:hover {
+	background-color: rgb(var(--color-verde-boton));
+	border-color: white;
 }
-.button:hover .img{
-    background-color: white;
+.button:hover .img {
+	background-color: white;
 }
-.button:hover .text{
-    color: white;
+.button:hover .text {
+	color: white;
 }
-.button:active{
-    background-color: var(--color-verde-boton);
+.button:active {
+	background-color: rgb(var(--color-verde-boton));
+}
+.buttonWithoutText {
+	padding-left: 2vw;
+	background-color: white;
+	border-radius: 0px 30px 30px 0px;
+	cursor: pointer;
+	border-color: rgb(var(--color-verde-boton));
 }
