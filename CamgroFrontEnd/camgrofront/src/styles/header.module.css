@@ -1,0 +1,18 @@
+.header{
+    background-color: var(--color-verde-fondo);
+    opacity: 0.5;
+}
+.header ul li button {
+    z-index: -1;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav ul li {
+    float: left;
+}
+
