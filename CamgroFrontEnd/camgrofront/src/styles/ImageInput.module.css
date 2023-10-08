@@ -4,6 +4,8 @@
     width: 20.5vw;
     border-radius: 10%/50%;
     border: 2px solid rgb(var(--color-verde-boton));
+    background-color: white;
+    margin: 10px;
 }
 .containerImage{
     background-color: rgba(var(--color-verde-boton), 50%);
@@ -17,6 +19,7 @@
     margin-left: 5px;
     background-color: transparent;
     color: white;
+    font-family: 'Century Gothic';
 }
 .input:focus{
     border: none;
