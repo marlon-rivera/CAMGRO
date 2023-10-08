@@ -4,10 +4,10 @@
 	width: 13vw;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	border-radius: 20px;
 	border-color: rgb(var(--color-verde-boton));
 	cursor: pointer;
+	margin: 3px;
 }
 .img {
 	border-radius: 40%/50%;

@@ -6,10 +6,11 @@ import catalog from './../Static/catalogo.png';
 import catalogInv from './../Static/catalogoInv.png';
 import logo from './../Static/logo.png';
 import magnifying from './../Static/lupa.png';
-import userLogo from './../Static/user.png'
-import lock from './../Static/padlock.png'
-import addUser from './../Static/add-user.png'
-import addUserInv from './../Static/add-userInv.png'
+import userLogo from './../Static/user.png';
+import lock from './../Static/padlock.png';
+import addUser from './../Static/add-user.png';
+import addUserInv from './../Static/add-userInv.png';
+import loginBig from './../Static/entrar.png';
 
 export const images = {
 	house,
@@ -23,5 +24,6 @@ export const images = {
 	userLogo,
 	lock,
 	addUser,
-	addUserInv
+	addUserInv,
+	loginBig
 };
