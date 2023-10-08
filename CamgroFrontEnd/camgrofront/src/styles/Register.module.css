@@ -8,22 +8,17 @@
     margin-left:  5vw;
     margin-right:  5vw;
 }
-
-.title{
-    height: 15%;
-    font-family: 'Century Gothic';
-    color: black;
-}
-
 .textTitle{
     font-size: 2.5vw;
+    font-family: 'Century Gothic';
+    margin: 15px;
 }
 
 .line{
     margin-right: 10px;
     margin-left: 10px;
     border: none; 
-    border-top: 1.5px solid #000;
+    border-top: 1.5px solid rgb(var(--color-verde-fondo));
 }
 
 .content{
@@ -35,14 +30,19 @@
 }
 
 .submit{
+
+    margin: 35px;
     height: 15%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .label{
     font-family: 'Century Gothic';
 	color: rgb(var(--color-verde-boton));
 	font-size: 1.5vw;
-    margin-right: 4vw;
+    display: inline-block;
+    width: 18vw;
 }
 
 .input{
@@ -50,8 +50,15 @@
     border-color: rgb(var(--color-verde-boton));
     width: 16vw;
     height: 2.6vh;
+    display: inline-block;
 }
 
 .inputArea{
     margin-top: 5vh;
+}
+.containerInputs{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 50vh;
 }
