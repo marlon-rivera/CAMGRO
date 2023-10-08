@@ -3,10 +3,13 @@ import Button from './Button';
 import ImageInput from './ImageInput';
 import { images } from './Images';
 import styles from './../styles/Login.module.css';
+import { useNavigate } from 'react-router-dom/dist';
 
 function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+
+	const navigate = useNavigate();
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -40,11 +43,14 @@ function Login() {
 						source={images.login}
 						sourceInv={images.loginInv}
 						text='Ingresar'
+						func={handleSubmit}
 					/>
 					<Button
 						source={images.addUser}
 						sourceInv={images.addUserInv}
 						text='Registrarse'
+						func={navigate}
+						path='/register'
 					/>
 				</form>
 			</div>

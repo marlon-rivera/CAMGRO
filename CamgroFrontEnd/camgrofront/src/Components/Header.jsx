@@ -2,8 +2,10 @@ import { images } from './Images';
 import Button from './Button';
 import styles from './../styles/header.module.css';
 import SearchBar from './SearchBar';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+	const navigate = useNavigate();
 	return (
 		<header className={styles.header}>
 			<nav>
@@ -14,6 +16,8 @@ function Header() {
 							source={images.house}
 							sourceInv={images.houseInv}
 							text='Nosotros'
+							func={navigate}
+							path='/'
 						/>
 					</li>
 					<li>
@@ -21,6 +25,8 @@ function Header() {
 							source={images.catalog}
 							sourceInv={images.catalogInv}
 							text='Cátalogo'
+							func={navigate}
+							path='/catalog'						
 						/>
 					</li>
 					<li>
@@ -31,6 +37,8 @@ function Header() {
 							source={images.login}
 							sourceInv={images.loginInv}
 							text='Ingresar'
+							func={navigate}
+							path='/login'
 						/>
 					</li>
 				</ul>

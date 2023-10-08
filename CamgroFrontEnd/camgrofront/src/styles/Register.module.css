@@ -12,6 +12,7 @@
     font-size: 2.5vw;
     font-family: 'Century Gothic';
     margin: 15px;
+    color: black;
 }
 
 .line{
@@ -43,14 +44,20 @@
 	font-size: 1.5vw;
     display: inline-block;
     width: 18vw;
+    
 }
 
-.input{
+.input, .select{
     border-radius: 11px;
     border-color: rgb(var(--color-verde-boton));
     width: 16vw;
     height: 2.6vh;
     display: inline-block;
+    font-family: 'Century Gothic';
+
+}
+.select{
+    height: 4vh;
 }
 
 .inputArea{
