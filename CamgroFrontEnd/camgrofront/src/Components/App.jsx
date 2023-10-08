@@ -1,10 +1,8 @@
-import Login from './Login'
+import MainRouter from '../Routers/MainRouter'
 
 function App() {
 	return (
-		<div className='App'>
-			<Login />
-		</div>
+		<MainRouter />
 	);
 }
 
