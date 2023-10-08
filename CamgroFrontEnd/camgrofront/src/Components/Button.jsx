@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import styles from './../styles/button.module.css';
 import { useState } from 'react';
 
-
 function Button(props) {
 	if (!props.source && !props.sourceInv) {
 		return (
@@ -11,6 +10,7 @@ function Button(props) {
 			</button>
 		);
 	}
+
 
 	if (!props.text) {
 		return (
@@ -27,6 +27,14 @@ function Button(props) {
 			className={styles.button}
 			onMouseEnter={() => setImage(props.sourceInv)}
 			onMouseLeave={() => setImage(props.source)}
+			onClick={(e) => {
+				if(props.path){
+					props.func(props.path)
+				}else{
+					props.func(e)
+				}
+
+			}}
 		>
 			<img src={image} width={props.width} className={styles.img} />
 			<span className={styles.text}>{props.text}</span>
@@ -39,6 +47,9 @@ Button.propTypes = {
 	sourceInv: PropTypes.string,
 	text: PropTypes.string,
 	width: PropTypes.string,
+	func: PropTypes.func,
+	path: PropTypes.string
+
 };
 
 export default Button;
