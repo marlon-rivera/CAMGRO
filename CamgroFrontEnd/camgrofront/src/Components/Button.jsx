@@ -5,7 +5,7 @@ import { useState } from 'react';
 function Button(props) {
 	if (!props.source && !props.sourceInv) {
 		return (
-			<button className={styles.buttonWithText} onClick={(e) => props.func(e)}>
+			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => props.func(e)}>
 				<span className={styles.textText}>{props.text}</span>
 			</button>
 		);
@@ -48,7 +48,8 @@ Button.propTypes = {
 	text: PropTypes.string,
 	width: PropTypes.string,
 	func: PropTypes.func,
-	path: PropTypes.string
+	path: PropTypes.string,
+	disabled: PropTypes.bool
 
 };
 

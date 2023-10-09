@@ -64,3 +64,13 @@
 .buttonWithText:hover{
 	transform: scale(1.1);
 }
+.buttonDisabled{
+	border-color: rgb(var(--color-verde-boton));
+	background-color: white ;
+	width: 13vw;
+	display: flex;
+	align-items: center;
+	border-radius: 20px;
+	cursor: pointer;
+	margin: 3px;
+}

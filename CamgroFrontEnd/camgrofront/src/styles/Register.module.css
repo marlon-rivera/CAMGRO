@@ -58,6 +58,8 @@
 }
 .select{
     height: 4vh;
+    width: 16.5vw;
+
 }
 
 .inputArea{
@@ -76,4 +78,12 @@
     height: 2.6vh;
     display: inline-block;
     font-family: 'Century Gothic';
+}
+.selectRed{
+    height: 4vh;
+    display: inline-block;
+    font-family: 'Century Gothic';
+    border-radius: 11px;
+    border-color: red;
+    width: 16.5vw;
 }

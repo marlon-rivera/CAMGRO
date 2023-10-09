@@ -15,6 +15,15 @@ function Register() {
     const [password, setPassword] = useState('')
     const [secondPassword, setSecondPassword] = useState('')
 	const [nameTouch, setNameTouch] = useState(false)
+	const [lastNameTouch, setLastNameTouch] = useState(false)
+	const [phoneTouch, setPhoneTouch] = useState(false)
+	const [addressTouch, setAddressTouch] = useState(false)
+	const [emailTouch, setEmailTouch] = useState(false)
+	const [departmentTouch, setDepartmentTouch] = useState(false)
+	const [cityTouch, setCityTouch] = useState(false)
+	const [passwordTouch, setPasswordTouch] = useState(false)
+	const [passwordConfTouch, setPasswordConfTouch] = useState(false)
+
 	useEffect(() => {
 		handleOnChangeDepartment()
 	  }, [department]);
@@ -40,6 +49,10 @@ function Register() {
 		console.log(phone)
 	}
 
+	const verifyAllInputsFull = () =>{
+		return name && lastname && phone && password && address && email && secondPassword && department && city; 
+	}
+
 	return (
 		<div className={Styles.containerFormRegister}>
 			<form>
@@ -49,27 +62,27 @@ function Register() {
 					<div className={Styles.containerInputs}>
 						<div className={Styles.inputArea}>
 							<label className={ Styles.label }>Nombre:*</label>
-							<input className={ name && nameTouch ? Styles.input : Styles.inputRed} onBlur={() => setNameTouch(true)} type='text' onChange={(e) => {setName(e.target.value)}} required />
+							<input className={ !name && nameTouch ? Styles.inputRed : Styles.input} value={name} onBlur={() => setNameTouch(true)} type='text' onChange={(e) => {setName(e.target.value)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Apellido:*</label>
-							<input className={Styles.input} type='text' onChange={(e) => {setLastname(e.target.value)}} required />
+							<input className={ !lastname && lastNameTouch ? Styles.inputRed : Styles.input} type='text' value={lastname} onBlur={() => setLastNameTouch(true)} onChange={(e) => {setLastname(e.target.value)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Teléfono:*</label>
-							<input className={Styles.input} type='number' value={phone} onChange={(e) => {handleSumbitPhone(e)}} required />
+							<input className={ !phone && phoneTouch ? Styles.inputRed : Styles.input} type='number' value={phone} onBlur={()=>{setPhoneTouch(true)}}  onChange={(e) => {handleSumbitPhone(e)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Dirección:*</label>
-							<input className={Styles.input} type='text' onChange={(e) => {setAddress(e.target.value)}} required />
+							<input className={ !address && addressTouch ? Styles.inputRed : Styles.input} type='text' value={address} onBlur={()=>{setAddressTouch(true)}} onChange={(e) => {setAddress(e.target.value)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Email:*</label>
-							<input className={Styles.input} type='email' onChange={(e) => {setEmail(e.target.value)}} required />
+							<input className={ !email && emailTouch ? Styles.inputRed :  Styles.input} type='email' value={email} onBlur={()=>{setEmailTouch(true)}} onChange={(e) => {setEmail(e.target.value)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Departamento:*</label>
-							<select className={Styles.select} onChange={(e) => {setDepartment(e.target.value)}} required>
+							<select className={ !department && departmentTouch ? Styles.selectRed : Styles.select} value={department} onBlur={()=>setDepartmentTouch(true)} onChange={(e) => {setDepartment(e.target.value)}} required>
 								{places.length>0 && places.map(p => {
 									return(
 										<option key={p.id} value={p.departamento}>{p.departamento}</option>
@@ -79,7 +92,7 @@ function Register() {
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Ciudad:*</label>
-							<select className={Styles.select} onChange={(e) => setCity(e.target.value)} required>
+							<select className={ !city && cityTouch ? Styles.selectRed : Styles.select} value={city} onBlur={()=>setCityTouch(true)} onChange={(e) => setCity(e.target.value)} required>
 								{cities.length > 0 && cities.map((c, index)=>{
 									return(
 										<option key={index} value={c}>{c}</option>
@@ -89,17 +102,17 @@ function Register() {
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Contraseña:*</label>
-							<input className={Styles.input} type='password' onChange={(e) => {setPassword(e.target.value)}} required />
+							<input className={ !password && passwordTouch ? Styles.inputRed : Styles.input} type='password' value={password} onBlur={()=>setPasswordTouch(true)} onChange={(e) => {setPassword(e.target.value)}} required />
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Confirmar Contraseña:*</label>
-							<input className={Styles.input} type='password' onChange={(e) => {setSecondPassword(e.target.value)}} required />
+							<input className={ !secondPassword && passwordConfTouch ? Styles.inputRed : Styles.input} type='password' value={secondPassword} onBlur={()=>{setPasswordConfTouch(true)}} onChange={(e) => {setSecondPassword(e.target.value)}} required />
 						</div>
 					</div>
 				</div>
 				<div className={Styles.submit}>
 					<span>(*) Campos obligatorios </span>
-					<Button disab text='Registrarse' func={handleSubmit} disabled/>
+					<Button disabled={true} text='Registrarse' func={handleSubmit} onChange={verifyAllInputsFull()} />
 				</div>
 			</form>
 		</div>
