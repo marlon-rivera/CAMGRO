@@ -1,9 +1,10 @@
 .searchBar {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: stretch;
 	margin-right: 50px;
 	margin-left: 15px;
+	width: fit-content;
 }
 
 .input {

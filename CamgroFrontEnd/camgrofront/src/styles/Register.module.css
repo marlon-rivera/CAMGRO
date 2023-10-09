@@ -11,7 +11,8 @@
 .textTitle{
     font-size: 2.5vw;
     font-family: 'Century Gothic';
-    margin: 15px;
+    margin: 10px;
+    padding-top: 10px;
     color: black;
 }
 
@@ -54,7 +55,6 @@
     height: 2.6vh;
     display: inline-block;
     font-family: 'Century Gothic';
-
 }
 .select{
     height: 4vh;
@@ -68,4 +68,12 @@
     flex-direction: column;
     flex-wrap: wrap;
     max-height: 50vh;
+}
+.inputRed{
+    border-radius: 11px;
+    border-color: red;
+    width: 16vw;
+    height: 2.6vh;
+    display: inline-block;
+    font-family: 'Century Gothic';
 }

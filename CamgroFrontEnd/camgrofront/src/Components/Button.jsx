@@ -5,8 +5,8 @@ import { useState } from 'react';
 function Button(props) {
 	if (!props.source && !props.sourceInv) {
 		return (
-			<button className={styles.button}>
-				<span className={styles.text}>{props.text}</span>
+			<button className={styles.buttonWithText} onClick={(e) => props.func(e)}>
+				<span className={styles.textText}>{props.text}</span>
 			</button>
 		);
 	}
