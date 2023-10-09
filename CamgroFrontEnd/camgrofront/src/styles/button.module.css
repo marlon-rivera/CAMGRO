@@ -65,12 +65,20 @@
 	transform: scale(1.1);
 }
 .buttonDisabled{
+	background-color: white;
 	border-color: rgb(var(--color-verde-boton));
-	background-color: white ;
 	width: 13vw;
 	display: flex;
 	align-items: center;
 	border-radius: 20px;
 	cursor: pointer;
 	margin: 3px;
+}
+.textTextDisable{
+	font-family: 'Century Gothic';
+	color: rgb(var(--color-verde-boton));
+	font-size: 1.5vw;
+	display: inline-block;
+    text-align: center;
+    width: 100%;
 }

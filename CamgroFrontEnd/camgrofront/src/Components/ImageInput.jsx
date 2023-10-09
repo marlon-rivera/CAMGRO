@@ -8,7 +8,8 @@ function ImageInput(props){
             <div className={styles.containerImage}>
                 <img src={props.source} />
             </div>
-            <input className={styles.input} type={props.type} placeholder={props.placeholder} />
+            <input className={styles.input} value={props.value}
+						onChange={(e) => {props.onChange(e.target.value)}} type={props.type} placeholder={props.placeholder} />
         </div>
     );
 }
@@ -18,7 +19,7 @@ ImageInput.propTypes = {
     placeholder: PropTypes.string,
     type: PropTypes.string,
     value: PropTypes.string,
-    onchange: PropTypes.func
+    onChange: PropTypes.func
 }
 
 

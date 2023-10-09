@@ -6,7 +6,7 @@ function Button(props) {
 	if (!props.source && !props.sourceInv) {
 		return (
 			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => props.func(e)}>
-				<span className={styles.textText}>{props.text}</span>
+				<span className={ props.disabled ? styles.textTextDisable : styles.textText}>{props.text}</span>
 			</button>
 		);
 	}

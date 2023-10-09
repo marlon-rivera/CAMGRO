@@ -1,5 +1,7 @@
 package com.project.software.camgro.Camgro.jwt;
 
+import com.project.software.camgro.Camgro.domain.Account;
+import com.project.software.camgro.Camgro.domain.Person;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,6 +23,7 @@ public class JwtService {
     private final String SECRET_KEY = "lallaveeeee45454588749849849849849798498498a4s9849da84984s984a98s";
 
     public String getToken(UserDetails account){
+        System.out.println("token : " + getToken(new HashMap<>(), new Account("AC01", new Person(), "Marlon@gmail.com", "probando")));
         return getToken(new HashMap<>(), account);
     }
 
@@ -33,8 +36,6 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 24)))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
-
-
     }
 
     private Key getKey(){

@@ -13,6 +13,23 @@ function Login() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		const data = {
+			email,
+			password
+		};
+		console.log(data)
+		const url = 'http://localhost:8080/auth/login';
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then((response) => response.json())
+			.then((json) => console.log(json))
+			.catch((err) => console.log(err));
 		console.log(`Username: ${email}, Password: ${password}`);
 	};
 
@@ -26,14 +43,14 @@ function Login() {
 					<ImageInput
 						type='text'
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={setEmail}
 						source={images.userLogo}
 						placeholder='Email'
 					/>
 					<ImageInput
 						type='password'
 						value={password}
-						onChange={(e) => setPassword(e.target.value)}
+						onChange={setPassword}
 						source={images.lock}
 						placeholder='Contraseña'
 					/>
