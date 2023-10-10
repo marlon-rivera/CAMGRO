@@ -2,14 +2,16 @@ import { images } from './Images';
 import Button from './Button';
 import styles from './../styles/header.module.css';
 import SearchBar from './SearchBar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Header() {
 	const navigate = useNavigate();
 	return (
 		<header className={styles.header}>
 			<nav>
-				<img src={images.logo} alt='Logo camgro' className={styles.logo} />
+				<Link to='/'>
+					<img src={images.logo} alt='Logo camgro' className={styles.logo} />
+				</Link>
 				<ul>
 					<li>
 						<Button
@@ -26,7 +28,7 @@ function Header() {
 							sourceInv={images.catalogInv}
 							text='Cátalogo'
 							func={navigate}
-							path='/catalog'						
+							path='/catalog'
 						/>
 					</li>
 					<li>

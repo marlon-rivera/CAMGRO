@@ -3,7 +3,7 @@ import Button from './Button';
 import ImageInput from './ImageInput';
 import { images } from './Images';
 import styles from './../styles/Login.module.css';
-import { useNavigate } from 'react-router-dom/dist';
+import { useNavigate, Link} from 'react-router-dom';
 
 function Login() {
 	const [email, setEmail] = useState('');
@@ -15,9 +15,9 @@ function Login() {
 		event.preventDefault();
 		const data = {
 			email,
-			password
+			password,
 		};
-		console.log(data)
+		console.log(data);
 		const url = 'http://localhost:8080/auth/login';
 
 		fetch(url, {
@@ -28,7 +28,7 @@ function Login() {
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
-			.then((json) => console.log(json))
+			.then((json) => navigate('/'))
 			.catch((err) => console.log(err));
 		console.log(`Username: ${email}, Password: ${password}`);
 	};
@@ -36,7 +36,9 @@ function Login() {
 	return (
 		<div className={styles.containerLogin}>
 			<div className={styles.containerImg}>
-				<img className={styles.img} src={images.logo} alt='CAMGRO' />
+				<Link to='/'>
+					<img className={styles.img} src={images.logo} alt='CAMGRO' />
+				</Link>
 			</div>
 			<div className={styles.containerForm}>
 				<form onSubmit={handleSubmit} className={styles.form}>
@@ -54,7 +56,7 @@ function Login() {
 						source={images.lock}
 						placeholder='Contraseña'
 					/>
-                    <span className={styles.restorePass}>Recuperar contraseña</span>
+					<span className={styles.restorePass}>Recuperar contraseña</span>
 					<Button
 						type='sumbit'
 						source={images.login}
