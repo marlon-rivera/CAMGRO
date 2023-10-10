@@ -3,6 +3,7 @@ import Register from '../Components/Register';
 import Main from '../Components/Main';
 import Header from '../Components/Header';
 import Login from '../Components/Login'
+import NotFound from '../Components/NotFound';
 
 function MainRouter() {
 	return (
@@ -16,8 +17,8 @@ function MainRouter() {
 					path='*'
 					element={
 						<>
-							<h1>Error 4040</h1>
-							<strong>Esta página no existe</strong>
+							<Header />
+							<NotFound />
 						</>
 					}
 				/>

@@ -1,0 +1,36 @@
+.containerNotFound{
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    margin: 1.5vw;
+}
+.info{
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+
+.img{
+    width: 20vw;
+    align-self: flex-start;
+}
+.containerTextNotFound{
+    
+}
+.notFound{
+    font-size: 6vw;
+    font-family: 'Century Gothic';
+    color: white;
+    align-self: flex-end;
+}
+.textNotFound{
+    display: inherit;
+    font-size: 3vw;
+    color: white;
+    font-family: 'Century Gothic';
+    align-self: flex-end;
+}
+.button{
+    align-self: flex-end;
+}
