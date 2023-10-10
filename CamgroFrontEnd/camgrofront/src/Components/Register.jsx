@@ -48,7 +48,7 @@ function Register() {
 			password
 		};
 		 const url = 'http://localhost:8080/auth/register';
-		
+		console.log(data)
 		fetch(url, {
 			method: 'POST',
 			headers: {

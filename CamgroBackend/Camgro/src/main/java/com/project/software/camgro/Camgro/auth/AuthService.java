@@ -48,20 +48,28 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest registerRequest) {
+        System.out.println(registerRequest);
         Optional<Place> placeDep = placeRepository.findByTypeOfPlaceAndNamePlace("D", registerRequest.getDepartment());
+        System.out.println("Pase departamento");
+        System.out.println(placeDep.get());
+        //CORREGIR
         Optional<Place> placeCit;
         Place city;
         if(placeDep.isPresent()){
             placeCit = placeRepository.findByTypeOfPlaceAndNamePlace("C", registerRequest.getCity());
+            System.out.println(placeService.getId());
             city = placeCit.orElseGet(() -> placeRepository.save(new Place(placeService.getNewId(), "C", placeDep.get(), registerRequest.getCity())));
+            System.out.println("pase dep present");
         }else{
             Place dep = placeRepository.save(new Place(placeService.getNewId(), "D", null, registerRequest.getDepartment()));
             city = placeRepository.save(new Place(placeService.getNewId(), "C", dep, registerRequest.getCity()));
+            System.out.println("pase dp no present");
         }
         Person person = new Person(personService.getNewId(), registerRequest.getName(), registerRequest.getPhone(), registerRequest.getAddress(), city);
         Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()));
         personRepository.save(person);
         accountRepository.save(account);
+        System.out.println("pase cuenta y person ");
         return new AuthResponse(jwtService.getToken(account));
     }
 }

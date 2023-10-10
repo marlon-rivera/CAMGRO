@@ -33,4 +33,7 @@ public class PlaceService {
         return id;
     }
 
+    public String getId() {
+        return id;
+    }
 }
