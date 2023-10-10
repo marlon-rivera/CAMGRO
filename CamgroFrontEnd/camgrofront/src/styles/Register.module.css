@@ -33,10 +33,11 @@
 
 .submit{
 
-    margin: 35px;
+    margin: 0 2vw 3vw 2vw;
     height: 15%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .label{

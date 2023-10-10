@@ -1,10 +1,7 @@
 package com.project.software.camgro.Camgro.domain;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +18,9 @@ public class Place {
     private String idPlace;
     @Column(name = "tipo_lugar")
     private String typeOfPlace;
-    @Column(name = "lug_id_lugares")
-    private String lugIdLug;
+    @ManyToOne
+    @JoinColumn(name = "lug_id_lugares")
+    private Place lugIdLug;
     @Column(name = "nombre_lugar")
     private String namePlace;
 

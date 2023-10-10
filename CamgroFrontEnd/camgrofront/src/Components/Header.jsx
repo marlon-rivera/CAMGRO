@@ -15,7 +15,7 @@ function Header() {
 						<Button
 							source={images.house}
 							sourceInv={images.houseInv}
-							text='Nosotros'
+							text='Inicio'
 							func={navigate}
 							path='/'
 						/>

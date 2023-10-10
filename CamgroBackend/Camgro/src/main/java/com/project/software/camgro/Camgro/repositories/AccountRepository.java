@@ -9,5 +9,5 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     Optional<Account> findAccountByEmail(String email);
 
-    Account findTopByOrderByIdDesc();
+    Optional<Account> findTopByOrderByIdDesc();
 }

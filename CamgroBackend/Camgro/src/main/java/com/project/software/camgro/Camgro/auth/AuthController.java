@@ -1,12 +1,7 @@
 package com.project.software.camgro.Camgro.auth;
 
-import com.project.software.camgro.Camgro.auth.AuthResponse;
-import com.project.software.camgro.Camgro.auth.AuthService;
-import com.project.software.camgro.Camgro.auth.LoginRequest;
-import com.project.software.camgro.Camgro.auth.RegisterRequest;
-import com.project.software.camgro.Camgro.staticdomain.AccountCount;
+import com.project.software.camgro.Camgro.services.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final AccountCount accountCount;
+    private final AccountService accountService;
 
     @PostMapping(value ="login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         AuthResponse response = null;
-        register(new RegisterRequest("pilar", "32133333", "as", "Bogota", "Bogota", "pilar@gmail.com", "123"));
-        System.out.println(AccountCount.getInstance().getLastRecord());
         try {
             response = authService.login(loginRequest);
         }catch (UsernameNotFoundException e){

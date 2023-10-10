@@ -23,10 +23,11 @@ function Register() {
 	const [cityTouch, setCityTouch] = useState(false);
 	const [passwordTouch, setPasswordTouch] = useState(false);
 	const [passwordConfTouch, setPasswordConfTouch] = useState(false);
+	const [correctPass, setCorrectPass] = useState(true);
 
 	useEffect(() => {
 		handleOnChangeDepartment();
-	}, [department]);
+	}, [department, secondPassword, password, correctPass]);
 	const handleOnChangeDepartment = () => {
 		for (let i = 0; i < places.length; i++) {
 			if (places[i].departamento === department) {
@@ -35,18 +36,29 @@ function Register() {
 		}
 	};
 
-	const handleSubmit = (event) => {
-		console.log(
-			name +
-				lastname +
-				phone +
-				password +
-				address +
-				email +
-				secondPassword +
-				department +
-				city,
-		);
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		const data = {
+			name : `${name} ${lastname}`,
+			phone,
+			address,
+			city,
+			department,
+			email, 
+			password
+		};
+		 const url = 'http://localhost:8080/auth/register';
+		
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then((response) => response.json())
+			.then((json) => console.log(json))
+			.catch((err) => console.log(err));
 	};
 	loadPlaces(setPlaces);
 
@@ -54,7 +66,6 @@ function Register() {
 		if (e.target.value.length <= 10) {
 			setPhone(e.target.value);
 		}
-		console.log(phone);
 	};
 
 	const verifyAllInputsFull = () => {
@@ -68,6 +79,8 @@ function Register() {
 			secondPassword &&
 			department &&
 			city
+			&&
+			secondPassword === password
 		);
 	};
 
@@ -207,7 +220,7 @@ function Register() {
 							<label className={Styles.label}>Contraseña:*</label>
 							<input
 								className={
-									!password && passwordTouch ? Styles.inputRed : Styles.input
+									(!password && passwordTouch) || (!correctPass) ? Styles.inputRed : Styles.input
 								}
 								type='password'
 								value={password}
@@ -222,7 +235,8 @@ function Register() {
 							<label className={Styles.label}>Confirmar Contraseña:*</label>
 							<input
 								className={
-									!secondPassword && passwordConfTouch
+									(!secondPassword && passwordConfTouch)
+									|| (!correctPass)
 										? Styles.inputRed
 										: Styles.input
 								}
@@ -233,6 +247,10 @@ function Register() {
 								}}
 								onChange={(e) => {
 									setSecondPassword(e.target.value);
+									if(password !== e.target.value){ setCorrectPass(false)}else{setCorrectPass(true)}
+									console.log(password)
+									console.log(secondPassword)
+									console.log(password !== secondPassword)
 								}}
 								required
 							/>
