@@ -16,23 +16,21 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    private boolean last;
-    private String id;
-    private int number;
-
     public String getNewId(){
-        if(!last){
-            Optional<Person> person = personRepository.findTopByOrderByIdDesc();
-            if(person.isPresent()){
-                id = person.get().getId();
-                number = Integer.parseInt(id.substring(2));
-            }else {
+        Optional<Person> person = personRepository.findTopByOrderByIdDesc();
+        int number;
+        String id;
+        if(person.isPresent()){
+            id = person.get().getId();
+            System.out.println(id);
+            number = Integer.parseInt(id.substring(1));
+        }else {
                 number = 0;
-            }
-            last = true;
         }
+
         number++;
         id = "P" + number;
         return id;
     }
+
 }

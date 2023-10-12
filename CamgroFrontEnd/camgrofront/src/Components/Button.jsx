@@ -14,7 +14,7 @@ function Button(props) {
 
 	if (!props.text) {
 		return (
-			<button className={styles.buttonWithoutText}>
+			<button onClick={()=>props.func(props.path)} className={  styles.buttonWithoutText}>
 				<img className={styles.img} src={props.source} />
 			</button>
 		);

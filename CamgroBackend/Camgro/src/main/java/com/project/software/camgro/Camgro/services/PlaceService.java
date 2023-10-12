@@ -13,27 +13,20 @@ public class PlaceService {
 
     @Autowired
     private PlaceRepository placeRepository;
-    private boolean last;
-    private String id;
-    private int number;
 
     public String getNewId(){
-        if(!last){
-            Optional<Place> place = placeRepository.findTopByOrderByIdPlaceDesc();
-            if(place.isPresent()){
-                id = place.get().getIdPlace();
-                number = Integer.parseInt(id.substring(2));
-            }else {
-                number = 0;
-            }
-            last = true;
+        Optional<Place> place = placeRepository.findTopByOrderByIdPlaceDesc();
+        String id;
+        int number;
+        if(place.isPresent()){
+            id = place.get().getIdPlace();
+            number = Integer.parseInt(id.substring(2));
+        }else {
+            number = 0;
         }
         number++;
         id = "PL" + number;
         return id;
     }
 
-    public String getId() {
-        return id;
-    }
 }

@@ -11,6 +11,8 @@ import lock from './../Static/padlock.png';
 import addUser from './../Static/add-user.png';
 import addUserInv from './../Static/add-userInv.png';
 import notFound from './../Static/NotFound.png'
+import x from './../Static/x.png'
+import xInv from './../Static/xInv.png'
 
 export const images = {
 	house,
@@ -25,5 +27,7 @@ export const images = {
 	lock,
 	addUser,
 	addUserInv,
-	notFound
+	notFound,
+	x,
+	xInv
 };

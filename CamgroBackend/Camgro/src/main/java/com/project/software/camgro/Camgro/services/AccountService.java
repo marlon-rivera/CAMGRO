@@ -13,20 +13,16 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    private boolean last;
     private int number;
     private String id;
 
     public String getNewID(){
-        if(!last){
-            Optional<Account> account = accountRepository.findTopByOrderByIdDesc();
-            if(account.isPresent()){
-                id = account.get().getId();
-                number = Integer.parseInt(id.substring(2));
-            }else {
-                number = 0;
-            }
-            last = true;
+        Optional<Account> account = accountRepository.findTopByOrderByIdDesc();
+        if(account.isPresent()){
+            id = account.get().getId();
+            number = Integer.parseInt(id.substring(2));
+        }else {
+            number = 0;
         }
         number++;
         id = "AC" + number;

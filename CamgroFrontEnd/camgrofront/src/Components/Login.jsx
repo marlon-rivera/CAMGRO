@@ -56,7 +56,7 @@ function Login() {
 						source={images.lock}
 						placeholder='Contraseña'
 					/>
-					<span className={styles.restorePass}>Recuperar contraseña</span>
+					<Link to={'/login/restore-password'}><span className={styles.restorePass}>Recuperar contraseña</span></Link> 
 					<Button
 						type='sumbit'
 						source={images.login}

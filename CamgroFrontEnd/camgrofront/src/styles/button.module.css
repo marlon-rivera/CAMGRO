@@ -39,7 +39,9 @@
 .buttonWithoutText {
 	padding-left: 2vw;
 	background-color: white;
-	border-radius: 0px 30px 30px 0px;
+	border-top-right-radius: 30px; /* Bordes derechos superiores */
+    border-bottom-right-radius: 30px; /* Bordes derechos inferiores */        border-top-left-radius: 0; /* Elimina el borde izquierdo superior */
+    border-bottom-left-radius: 0; /* Elimina el borde izquierdo inferior */
 	cursor: pointer;
 	border-color: rgb(var(--color-verde-boton));
 }

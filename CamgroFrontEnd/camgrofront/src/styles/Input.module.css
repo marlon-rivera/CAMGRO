@@ -1,0 +1,8 @@
+.input{
+    border-radius: 11px;
+    border-color: rgb(var(--color-verde-boton));
+    width: 16vw;
+    height: 4vh;
+    display: inline-block;
+    font-family: 'Century Gothic';
+}
