@@ -1,6 +1,7 @@
 import Styles from './../styles/Register.module.css';
 import Button from './Button';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
 	const [places, setPlaces] = useState([]);
@@ -24,6 +25,7 @@ function Register() {
 	const [passwordTouch, setPasswordTouch] = useState(false);
 	const [passwordConfTouch, setPasswordConfTouch] = useState(false);
 	const [correctPass, setCorrectPass] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		handleOnChangeDepartment();
@@ -57,7 +59,7 @@ function Register() {
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
-			.then((json) => console.log(json))
+			.then((json) => {navigate('/login')})
 			.catch((err) => console.log(err));
 	};
 	loadPlaces(setPlaces);

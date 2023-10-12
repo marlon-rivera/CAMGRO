@@ -51,7 +51,7 @@ public class AuthService {
         System.out.println(registerRequest);
         Optional<Place> placeDep = placeRepository.findByTypeOfPlaceAndNamePlace("D", registerRequest.getDepartment());
         System.out.println("Pase departamento");
-        System.out.println(placeDep.get());
+        System.out.println(placeDep.isPresent() ? placeDep.get() : null);
         //CORREGIR
         Optional<Place> placeCit;
         Place city;
