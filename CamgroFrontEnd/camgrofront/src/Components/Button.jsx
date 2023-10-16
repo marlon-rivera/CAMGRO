@@ -3,24 +3,36 @@ import styles from './../styles/button.module.css';
 import { useState } from 'react';
 
 function Button(props) {
+
+	const [image, setImage] = useState(props.source);
+
+
 	if (!props.source && !props.sourceInv) {
 		return (
-			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => props.func(e)}>
+			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => props.func(e)} type={props.type}>
 				<span className={ props.disabled ? styles.textTextDisable : styles.textText}>{props.text}</span>
 			</button>
 		);
 	}
 
-
-	if (!props.text) {
+	if(!props.text && props.sourceInv && props.source){
 		return (
-			<button onClick={()=>props.func(props.path)} className={  styles.buttonWithoutText}>
-				<img className={styles.img} src={props.source} />
+			<button onMouseEnter={() => setImage(props.sourceInv)}
+			type={props.type}
+			onMouseLeave={() => setImage(props.source)}  className={styles.buttonOnlyImg}  onClick={()=>props.func(props.path)}>
+				<img src={image} />
 			</button>
 		);
 	}
 
-	const [image, setImage] = useState(props.source);
+
+	if (!props.text && !props.sourceInv) {
+		return (
+			<button onClick={()=>props.func(props.path)} className={styles.buttonWithoutText}>
+				<img className={styles.img} src={props.source} />
+			</button>
+		);
+	}
 
 	return (
 		<button
@@ -49,8 +61,8 @@ Button.propTypes = {
 	width: PropTypes.string,
 	func: PropTypes.func,
 	path: PropTypes.string,
-	disabled: PropTypes.bool
-
+	disabled: PropTypes.bool,
+	type : PropTypes.string
 };
 
 export default Button;

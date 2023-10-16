@@ -1,8 +1,18 @@
 .input{
-    border-radius: 11px;
+    border: 4px solid;
+    border-radius: 10%/50%;
     border-color: rgb(var(--color-verde-boton));
-    width: 16vw;
-    height: 4vh;
+    width: 22vw;
+    height: 6vh;
+    display: inline-block;
+    font-family: 'Century Gothic';
+}
+.inputRed{
+    border: 4px solid;
+    border-radius: 10%/50%;
+    border-color: red;
+    width: 22vw;
+    height: 6vh;
     display: inline-block;
     font-family: 'Century Gothic';
 }

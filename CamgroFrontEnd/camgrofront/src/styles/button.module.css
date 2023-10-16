@@ -4,6 +4,7 @@
 	width: 13vw;
 	display: flex;
 	align-items: center;
+	border: 2px solid;
 	border-radius: 20px;
 	border-color: rgb(var(--color-verde-boton));
 	cursor: pointer;
@@ -25,6 +26,7 @@
 }
 .button:hover {
 	background-color: rgb(var(--color-verde-boton));
+	border: 2px solid;
 	border-color: white;
 }
 .button:hover .img {
@@ -43,13 +45,16 @@
     border-bottom-right-radius: 30px; /* Bordes derechos inferiores */        border-top-left-radius: 0; /* Elimina el borde izquierdo superior */
     border-bottom-left-radius: 0; /* Elimina el borde izquierdo inferior */
 	cursor: pointer;
+	border: 2px solid;
 	border-color: rgb(var(--color-verde-boton));
 }
 .buttonWithText {
 	background: rgb(var(--color-verde-boton));
 	width: 13vw;
+	height: 6vh;
 	display: flex;
 	align-items: center;
+	border: 2px solid;
 	border-radius: 20px;
 	border-color: rgb(var(--color-verde-boton));
 	cursor: pointer;
@@ -68,10 +73,12 @@
 }
 .buttonDisabled{
 	background-color: white;
-	border-color: rgb(var(--color-verde-boton));
 	width: 13vw;
+	height:6vh;
 	display: flex;
 	align-items: center;
+	border: 2px solid;
+	border-color: rgb(var(--color-verde-boton));
 	border-radius: 20px;
 	cursor: pointer;
 	margin: 3px;
@@ -83,4 +90,19 @@
 	display: inline-block;
     text-align: center;
     width: 100%;
+}
+.buttonOnlyImg{
+	background-color: rgb(var(--color-verde-boton));
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	border: 2px solid;
+	border-color: rgb(var(--color-verde-boton));
+}
+.buttonOnlyImg:hover{
+	background-color: white;
+	padding: 0.5vw;
+	cursor: pointer;
+	border-color: rgb(var(--color-verde-boton));
 }
