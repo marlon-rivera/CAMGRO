@@ -9,7 +9,13 @@ function Button(props) {
 
 	if (!props.source && !props.sourceInv) {
 		return (
-			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => props.func(e)} type={props.type}>
+			<button disabled={props.disabled} className={ props.disabled ? styles.buttonDisabled : styles.buttonWithText} onClick={(e) => {
+				if(props.path){
+					props.func(props.path)
+				}else{
+					props.func(e)
+				}
+			} } type={props.type}>
 				<span className={ props.disabled ? styles.textTextDisable : styles.textText}>{props.text}</span>
 			</button>
 		);

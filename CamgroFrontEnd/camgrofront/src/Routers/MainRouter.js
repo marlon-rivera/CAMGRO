@@ -5,6 +5,7 @@ import Header from '../Components/Header';
 import Login from '../Components/Login'
 import NotFound from '../Components/NotFound';
 import RestorePassword from '../Components/RestorePassword'
+import Modify from '../Components/ModifyAccount';
 
 function MainRouter() {
 	return (
@@ -14,6 +15,7 @@ function MainRouter() {
 				<Route path='/register' element={<> <Header /> <Register /> </>} />
         		<Route path='/login' element={<Login />} />
 				<Route path='/login/restore-password' element={<RestorePassword />} />
+				<Route path='/modify-account' element={<><Header/><Modify /></>} />
 				<Route
 					path='*'
 					element={
