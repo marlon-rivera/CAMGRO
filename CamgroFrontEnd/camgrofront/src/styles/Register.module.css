@@ -92,3 +92,6 @@
     border-color: red;
     width: 16.5vw;
 }
+.disabled{
+    pointer-events: none;
+}

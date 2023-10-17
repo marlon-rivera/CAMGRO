@@ -1,6 +1,7 @@
 package com.project.software.camgro.Camgro.auth;
 
 import com.project.software.camgro.Camgro.domain.ErrorMesage;
+import com.project.software.camgro.Camgro.errors.RepeatedAccountException;
 import com.project.software.camgro.Camgro.services.AccountService;
 import com.project.software.camgro.Camgro.services.EmailService;
 import com.project.software.camgro.Camgro.services.RecoverPasswordService;
@@ -34,8 +35,12 @@ public class AuthController {
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) throws Exception {
-        return ResponseEntity.ok(authService.register(registerRequest));
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        try{
+            return ResponseEntity.ok(authService.register(registerRequest));
+        }catch (RepeatedAccountException ex) {
+            return ResponseEntity.status(409).body(new ErrorMesage(ex.getMessage()));
+        }
     }
 
     @PostMapping(value = "generate-code")

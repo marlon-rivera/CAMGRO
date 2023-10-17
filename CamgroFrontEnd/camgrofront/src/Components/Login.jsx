@@ -4,10 +4,12 @@ import ImageInput from './ImageInput';
 import { images } from './Images';
 import styles from './../styles/Login.module.css';
 import { useNavigate, Link} from 'react-router-dom';
+import Error from './Error';
 
 function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState(false)
 
 	const navigate = useNavigate();
 
@@ -17,7 +19,6 @@ function Login() {
 			email,
 			password,
 		};
-		console.log(data);
 		const url = 'http://localhost:8080/auth/login';
 
 		fetch(url, {
@@ -29,12 +30,15 @@ function Login() {
 		})
 			.then((response) => response.json())
 			.then((json) => navigate('/'))
-			.catch((err) => console.log(err));
-		console.log(`Username: ${email}, Password: ${password}`);
+			.catch(() => {setError(true)});
 	};
 
+	const changeError = () => {
+		setError(false);
+	}
+
 	return (
-		<div className={styles.containerLogin}>
+		<div className={error ? `${styles.disabled} ${styles.containerLogin}` : styles.containerLogin}>
 			<div className={styles.containerImg}>
 				<Link to='/'>
 					<img className={styles.img} src={images.logo} alt='CAMGRO' />
@@ -73,6 +77,12 @@ function Login() {
 					/>
 				</form>
 			</div>
+			{ error &&
+				<Error
+					func={changeError}
+					message='Correo electronico o contraseña incorrectos. Intentelo nuevamente.'
+				/>
+			}
 		</div>
 	);
 }

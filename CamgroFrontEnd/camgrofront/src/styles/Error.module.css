@@ -20,7 +20,7 @@
 .message{
     width: 70%;
     font-family: 'Century Gothic';
-    font-size: 1rem;
+    font-size: 1.2rem;
     text-align: center;
     color: rgb(var(--color-verde-fondo));
 }
@@ -29,5 +29,10 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-bottom: -65px;
+}
+.logo{
+    width: 30%;
+}
+.img{
+    width: 100%;
 }

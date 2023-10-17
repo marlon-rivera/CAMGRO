@@ -2,6 +2,7 @@ import Styles from './../styles/Register.module.css';
 import Button from './Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Error from './Error';
 
 function Register() {
 	const [places, setPlaces] = useState([]);
@@ -25,6 +26,8 @@ function Register() {
 	const [passwordTouch, setPasswordTouch] = useState(false);
 	const [passwordConfTouch, setPasswordConfTouch] = useState(false);
 	const [correctPass, setCorrectPass] = useState(true);
+	const [error, setError] = useState(false);
+	const [errMessage, setErrMessage] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -39,18 +42,17 @@ function Register() {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		const data = {
-			name : `${name} ${lastname}`,
+			name: `${name} ${lastname}`,
 			phone,
 			address,
 			city,
 			department,
-			email, 
-			password
+			email,
+			password,
 		};
-		 const url = 'http://localhost:8080/auth/register';
-		console.log(data)
+		const url = 'http://localhost:8080/auth/register';
 		fetch(url, {
 			method: 'POST',
 			headers: {
@@ -58,9 +60,18 @@ function Register() {
 			},
 			body: JSON.stringify(data),
 		})
-			.then((response) => response.json())
-			.then((json) => {navigate('/login')})
-			.catch((err) => console.log(err));
+			.then((r) => {
+				return r.json();
+			})
+			.then((r) => {
+				if(r.message){
+					setErrMessage(r.message);
+					setError(true);
+				}else{
+					navigate('/login');
+				}
+			})
+			
 	};
 	loadPlaces(setPlaces);
 
@@ -80,14 +91,16 @@ function Register() {
 			email &&
 			secondPassword &&
 			department &&
-			city
-			&&
+			city &&
 			secondPassword === password
 		);
 	};
 
+	const changeError = () => {
+		setError(false);
+	};
 	return (
-		<div className={Styles.containerFormRegister}>
+		<div className={ error ? `${Styles.disabled} ${Styles.containerFormRegister}` : Styles.containerFormRegister}>
 			<form>
 				<h1 className={Styles.textTitle}>REGISTRARSE</h1>
 				<hr className={Styles.line} />
@@ -222,7 +235,9 @@ function Register() {
 							<label className={Styles.label}>Contraseña:*</label>
 							<input
 								className={
-									(!password && passwordTouch) || (!correctPass) ? Styles.inputRed : Styles.input
+									(!password && passwordTouch) || !correctPass
+										? Styles.inputRed
+										: Styles.input
 								}
 								type='password'
 								value={password}
@@ -237,8 +252,7 @@ function Register() {
 							<label className={Styles.label}>Confirmar Contraseña:*</label>
 							<input
 								className={
-									(!secondPassword && passwordConfTouch)
-									|| (!correctPass)
+									(!secondPassword && passwordConfTouch) || !correctPass
 										? Styles.inputRed
 										: Styles.input
 								}
@@ -249,10 +263,14 @@ function Register() {
 								}}
 								onChange={(e) => {
 									setSecondPassword(e.target.value);
-									if(password !== e.target.value){ setCorrectPass(false)}else{setCorrectPass(true)}
-									console.log(password)
-									console.log(secondPassword)
-									console.log(password !== secondPassword)
+									if (password !== e.target.value) {
+										setCorrectPass(false);
+									} else {
+										setCorrectPass(true);
+									}
+									console.log(password);
+									console.log(secondPassword);
+									console.log(password !== secondPassword);
 								}}
 								required
 							/>
@@ -268,6 +286,7 @@ function Register() {
 					/>
 				</div>
 			</form>
+			{error && <Error message={errMessage} func={changeError} />}
 		</div>
 	);
 }

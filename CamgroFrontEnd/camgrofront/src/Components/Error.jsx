@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 import styles from './../styles/Error.module.css'
 import { useRef, useEffect } from 'react';
+import { images } from './Images';
 
 function Error(props){
 
@@ -22,6 +23,9 @@ function Error(props){
 
     return (
         <div className={styles.error} ref={popupRef}>
+            <div className={styles.logo}>
+                <img src={images.logo} className={styles.img}alt="Logo CAMGRO" />
+            </div>
             <div className={styles.messageE}>
                 <p className={styles.message}>{props.message}</p>
             </div>

@@ -3,7 +3,7 @@ import Carrousel from "./Carrousel";
 
 function Main(){
     return (
-        <body>
+        <div>
             <main className={styles.main}>
                 <div className={styles.info}>
                     <h1>CAMGRO</h1>
@@ -11,7 +11,7 @@ function Main(){
                 </div>
                 <Carrousel />
             </main>
-        </body>
+        </div>
     );
 }
 export default Main;

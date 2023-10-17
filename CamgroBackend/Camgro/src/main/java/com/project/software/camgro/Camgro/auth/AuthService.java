@@ -3,6 +3,7 @@ package com.project.software.camgro.Camgro.auth;
 import com.project.software.camgro.Camgro.domain.Account;
 import com.project.software.camgro.Camgro.domain.Person;
 import com.project.software.camgro.Camgro.domain.Place;
+import com.project.software.camgro.Camgro.errors.RepeatedAccountException;
 import com.project.software.camgro.Camgro.jwt.JwtService;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
 import com.project.software.camgro.Camgro.repositories.PersonRepository;
@@ -49,8 +50,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = PSQLException.class)
-    public AuthResponse register(RegisterRequest registerRequest) throws Exception {
-
+    public AuthResponse register(RegisterRequest registerRequest) throws RepeatedAccountException {
             Optional<Place> placeDep = placeRepository.findByTypeOfPlaceAndNamePlace("D", registerRequest.getDepartment());
             boolean aux = true;
             Optional<Place> placeCit;
@@ -62,8 +62,11 @@ public class AuthService {
                 Place dep = placeRepository.save(new Place(placeService.getNewId(), "D", null, registerRequest.getDepartment()));
                 city = placeRepository.save(new Place(placeService.getNewId(), "C", dep, registerRequest.getCity()));
             }
-            Person person = new Person(personService.getNewId(), registerRequest.getName(), registerRequest.getPhone(), registerRequest.getAddress(), city);
+            if(accountRepository.findAccountByEmail(registerRequest.getEmail()).isPresent()){
+                throw new RepeatedAccountException("El correo que esta tratando de registrar, ya se encuentra registrado. Inicie sesion.");
+            }
 
+            Person person = new Person(personService.getNewId(), registerRequest.getName(), registerRequest.getPhone(), registerRequest.getAddress(), city);
             Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()));
             personRepository.save(person);
             accountRepository.save(account);
