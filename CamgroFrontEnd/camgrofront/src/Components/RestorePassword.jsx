@@ -1,5 +1,6 @@
 import Input from './Input';
 import Button from './Button';
+import Error from './Error'
 import styles from './../styles/RestorePassword.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { images } from './Images';
@@ -18,48 +19,113 @@ function RestorePassword() {
 	const [vNPassword, setVNPassword] = useState(false);
 	const [nPassword, setNPassword] = useState('');
 	const [nSPassword, setNSPassword] = useState('');
+	const [error, setError] = useState(false);
+	const [errMessage, setErrMessage] = useState('');
 
 	const handleSumbitEmail = (e) => {
 		e.preventDefault();
-		setVCode(true);
-		setVEmail(false);
-		setText('Por favor ingresar el código de <br /> seguridad:');
-		
+		const data = {
+			data: email,
+		};
+		fetch('http://localhost:8080/auth/generate-code', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				if (r.message) {
+					setError(true)
+					setErrMessage(r.message)
+				} else {
+					console.log(r);
+					setVCode(true);
+					setVEmail(false);
+					setText('Por favor ingresar el código de <br /> seguridad:');
+				}
+			})
+			.catch((err) => console.log('Catch: ' + err.message));
 	};
 
 	const handleSumbitCode = (e) => {
 		e.preventDefault();
-		setVNPassword(true);
-		setVCode(false);
-		setText(' Por favor ingresar la nueva <br /> contraseña: ');
+		const data = {
+			data: code,
+		};
+		fetch('http://localhost:8080/auth/validate-code', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				if (r.message) {
+					setError(true)
+					setErrMessage(r.message)
+				} else {
+					console.log(r);
+					setVNPassword(true);
+					setVCode(false);
+					setText(' Por favor ingresar la nueva <br /> contraseña: ');
+				}
+			})
+			.catch((err) => console.log('Catch: ' + err.message));
 	};
 
 	const handleSumbitPassword = (e) => {
 		e.preventDefault();
-		navigate('/login');
+		const data = {
+			data: nPassword,
+		};
+		fetch('http://localhost:8080/auth/change-password', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				if (r.message) {
+					setError(true)
+					setErrMessage(r.message)
+				} else {
+					console.log(r);
+					navigate('/login');
+				}
+			})
+			.catch((err) => console.log('Catch: ' + err.message));
 	};
 
-	const disableEmail = ()=>{
+	const disableEmail = () => {
 		const regex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 		return !regex.test(email);
-	}
+	};
 
 	const onChangeCode = (value) => {
-		if(value >= 0 && value.length <= 4){
-			setCode(value)
+		if (value >= 0 && value.length <= 4) {
+			setCode(value);
 		}
-	}
+	};
 
 	const disabledCode = () => {
 		return code.length < 4;
-	}
+	};
 
 	const disabledPasswords = () => {
-		return nPassword === '' || nSPassword === '' || nPassword !== nSPassword
+		return nPassword === '' || nSPassword === '' || nPassword !== nSPassword;
+	};
+	
+	const changeError = () => {
+		setError(false)
 	}
 
 	return (
-		<section className={styles.containerRestorePassword}>
+		<section className={error ? `${styles.containerRestorePassword} ${styles.disabled}` : `${styles.containerRestorePassword}`}>
 			<div className={styles.containerImg}>
 				<Link to='/'>
 					<img className={styles.img} src={images.logo} alt='CAMGRO' />
@@ -146,6 +212,9 @@ function RestorePassword() {
 					</div>
 				</form>
 			</div>
+			{error && 
+				<Error message={errMessage} func={changeError} />
+			}
 		</section>
 	);
 }
