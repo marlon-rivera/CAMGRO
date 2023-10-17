@@ -65,7 +65,11 @@
 
 .inputArea{
     margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
+
 .containerInputs{
     display: flex;
     flex-direction: column;
