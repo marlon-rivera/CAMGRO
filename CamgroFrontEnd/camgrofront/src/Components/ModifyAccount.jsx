@@ -78,7 +78,7 @@ function Modify() {
 	return (
 		<div className={Styles.containerFormRegister}>
 			<form>
-				<h1 className={Styles.textTitle}>MODIFICAR CUENTA</h1>
+				<h1 className={Styles.textTitle}>Modificar cuenta</h1>
 				<hr className={Styles.line} />
 				<div className={Styles.content}>
 					<div className={Styles.containerInputs}>

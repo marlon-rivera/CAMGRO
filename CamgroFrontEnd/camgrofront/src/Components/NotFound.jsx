@@ -12,7 +12,7 @@ function NotFound() {
 					<img src={images.notFound} alt='NotFound' className={styles.img} />
 				</div>
 				<div className={styles.containerTextNotFound}>
-					<h2 className={styles.notFound}>OOPS!</h2>
+					<h2 className={styles.notFound}>Oops!</h2>
 					<h3 className={styles.textNotFound}>
 						Te equivocaste! Vuelve al inicio y sigue <br /> disfrutando de
 						nuestra página.

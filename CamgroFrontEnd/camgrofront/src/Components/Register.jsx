@@ -102,7 +102,7 @@ function Register() {
 	return (
 		<div className={ error ? `${Styles.disabled} ${Styles.containerFormRegister}` : Styles.containerFormRegister}>
 			<form>
-				<h1 className={Styles.textTitle}>REGISTRARSE</h1>
+				<h1 className={Styles.textTitle}>Registrarse</h1>
 				<hr className={Styles.line} />
 				<div className={Styles.content}>
 					<div className={Styles.containerInputs}>
