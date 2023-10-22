@@ -1,9 +1,11 @@
+import { connect } from 'react-redux';
 import Styles from './../styles/Register.module.css';
 import Button from './Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types'
 
-function Modify() {
+function Modify(props) {
 	const [places, setPlaces] = useState([]);
 	const [department, setDepartment] = useState('');
 	const [cities, setCities] = useState([]);
@@ -23,8 +25,13 @@ function Modify() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		console.log("token: ", props.token)
+		if(!props.token){
+			navigate('/login')
+		}
 		handleOnChangeDepartment();
 	}, [department]);
+
 	const handleOnChangeDepartment = () => {
 		for (let i = 0; i < places.length; i++) {
 			if (places[i].departamento === department) {
@@ -83,7 +90,7 @@ function Modify() {
 				<div className={Styles.content}>
 					<div className={Styles.containerInputs}>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Nombre:*</label>
+							<label className={Styles.label}>Nombre:</label>
 							<input
 								className={!name && nameTouch ? Styles.inputRed : Styles.input}
 								value={name}
@@ -96,7 +103,7 @@ function Modify() {
 							/>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Apellido:*</label>
+							<label className={Styles.label}>Apellido:</label>
 							<input
 								className={
 									!lastname && lastNameTouch ? Styles.inputRed : Styles.input
@@ -111,7 +118,7 @@ function Modify() {
 							/>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Teléfono:*</label>
+							<label className={Styles.label}>Teléfono:</label>
 							<input
 								className={
 									!phone && phoneTouch ? Styles.inputRed : Styles.input
@@ -128,7 +135,7 @@ function Modify() {
 							/>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Dirección:*</label>
+							<label className={Styles.label}>Dirección:</label>
 							<input
 								className={
 									!address && addressTouch ? Styles.inputRed : Styles.input
@@ -145,7 +152,7 @@ function Modify() {
 							/>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Email:*</label>
+							<label className={Styles.label}>Email:</label>
 							<input
 								className={
 									!email && emailTouch ? Styles.inputRed : Styles.input
@@ -163,7 +170,7 @@ function Modify() {
 							/>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Departamento:*</label>
+							<label className={Styles.label}>Departamento:</label>
 							<select
 								className={
 									!department && departmentTouch
@@ -188,7 +195,7 @@ function Modify() {
 							</select>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Ciudad:*</label>
+							<label className={Styles.label}>Ciudad:</label>
 							<select
 								className={
 									!city && cityTouch ? Styles.selectRed : Styles.select
@@ -209,7 +216,7 @@ function Modify() {
 							</select>
 						</div>
 						<div className={Styles.inputArea}>
-							<label className={Styles.label}>Contraseña:*</label>
+							<label className={Styles.label}>Contraseña:</label>
                             <div>
                                 <Button
                                 text='Cambiar Contraseña'
@@ -242,4 +249,14 @@ async function loadPlaces(call) {
 		.then((r) => call(r));
 }
 
-export default Modify;
+Modify.propTypes = {
+	token: PropTypes.string
+}
+
+function mapStateToProps(state){
+	return{
+		token: state.token
+	}
+}
+
+export default connect(mapStateToProps, null)(Modify);

@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
+        System.out.println("Aca: " + token);
         String username;
         if(token == null){
             filterChain.doFilter(request, response);
@@ -51,9 +53,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        String auhtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(auhtHeader) && auhtHeader.startsWith("Bearer ")){
-            return auhtHeader.substring(7);
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                System.out.println("Header: " + request.getHeader(headerNames.nextElement()));
+            }
+        }
+        String authHeader = request.getHeader("Authorization");
+        System.out.println("Header: " + authHeader);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")){
+            return authHeader.substring(7);
         }
         return null;
     }

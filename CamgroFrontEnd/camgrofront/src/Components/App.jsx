@@ -1,9 +1,7 @@
-import MainRouter from '../Routers/MainRouter'
+import MainRouter from '../Routers/MainRouter';
 
 function App() {
-	return (
-		<MainRouter />
-	);
+	return <MainRouter />;
 }
 
 export default App;

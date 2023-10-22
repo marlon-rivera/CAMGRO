@@ -20,6 +20,7 @@ import messages from './../Static/messages.png'
 import modPost from './../Static/mod-posts.png'
 import newUser from './../Static/newUser.png'
 import posts from './../Static/posts.png'
+import logout from './../Static/logout.png'
 
 export const images = {
 	house,
@@ -43,5 +44,6 @@ export const images = {
 	messages,
 	modPost,
 	newUser,
-	posts
+	posts,
+	logout
 };

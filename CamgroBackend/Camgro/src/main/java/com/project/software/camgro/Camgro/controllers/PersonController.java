@@ -1,18 +1,20 @@
 package com.project.software.camgro.Camgro.controllers;
 
+import com.project.software.camgro.Camgro.auth.AuthResponse;
+import com.project.software.camgro.Camgro.records.SearchPersonRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/person")
 @RequiredArgsConstructor
 public class PersonController {
 
-    @PostMapping(value = "prueba")
-    public String welcome(){
-        return "Welcome to from secure endpoint";
+    @GetMapping(value ="search")
+    public ResponseEntity<?> searchPerson(@PathVariable String email){
+        System.out.println(email);
+        return ResponseEntity.ok(null);
     }
 
 }

@@ -36,6 +36,12 @@ function Menu() {
 						<span className={styles.text}>Mensajes</span>
 					</Link>
 				</li>
+				<li>
+					<Link className={styles.option}>
+						<img src={images.logout} alt="icon close session" className={styles.img} />
+						<span className={styles.text}>Cerrar sesión</span>
+					</Link>
+				</li>
 			</ul>
 		</div>
 	);

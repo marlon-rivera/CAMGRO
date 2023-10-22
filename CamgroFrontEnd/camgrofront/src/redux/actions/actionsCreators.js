@@ -1,11 +1,24 @@
-export const UPDATE_TOKEN = 'UPDATE_TOKEN'
-export const GET_INFO_ACCOUNT = 'GET_INFO_ACCOUNT'
-const API_REST = 'https://localhost:8080'
+export const UPDATE_TOKEN = 'UPDATE_TOKEN';
+export const LOGIN = 'LOGIN';
+export const UPDATE_PERSON = 'UPDATE_PERSON';
 
 export const updateToken = (token) => (distpach) => {
+	distpach({
+		type: UPDATE_TOKEN,
+		payload: token,
+	});
+};
 
-}
+export const updateInfoPerson = (person) => (distpach) => {
+	distpach({
+		type: UPDATE_PERSON,
+		payload: person
+	})
+};
 
-export const getInfoPerson = (id) => (distpach) => {
-    fetch(API_REST)
-}
+export const login = (login) => (distpach) => {
+    distpach({
+        type: LOGIN,
+        payload: login,
+    })
+};

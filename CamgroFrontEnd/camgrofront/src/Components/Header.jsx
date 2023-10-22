@@ -5,9 +5,10 @@ import styles from './../styles/header.module.css';
 import SearchBar from './SearchBar';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
-function Header() {
-	const [isLogged, setIsLogged] = useState(true);
+function Header(props) {
 	const [menu, setMenu] = useState(false);
 
 	useEffect(()=>{
@@ -44,7 +45,7 @@ function Header() {
 						<SearchBar />
 					</li>
 					<li>
-						{!isLogged ? (
+						{!props.isLogged ? (
 							<Button
 								source={images.login}
 								sourceInv={images.loginInv}
@@ -61,7 +62,7 @@ function Header() {
 							/>
 						)}
 
-						{menu && <Menu func={setIsLogged} />}
+						{menu && <Menu />}
 					</li>
 				</ul>
 			</nav>
@@ -69,4 +70,14 @@ function Header() {
 	);
 }
 
-export default Header;
+function mapStateToProps(state){
+	return {
+		isLogged : state.login
+	}
+}
+
+Header.propTypes={
+	isLogged : PropTypes.bool
+}
+
+export default connect(mapStateToProps, null)(Header);
