@@ -6,6 +6,7 @@ import Login from '../Components/Login'
 import NotFound from '../Components/NotFound';
 import RestorePassword from '../Components/RestorePassword'
 import Modify from '../Components/ModifyAccount';
+import AddPost from '../Components/AddPost';
 
 function MainRouter() {
 	return (
@@ -16,6 +17,7 @@ function MainRouter() {
         		<Route path='/login' element={<Login />} />
 				<Route path='/login/restore-password' element={<RestorePassword />} />
 				<Route path='/modify-account' element={<><Header/><Modify /></>} />
+				<Route path='/add-post' element={<><Header /> <AddPost /></>} />
 				<Route
 					path='*'
 					element={

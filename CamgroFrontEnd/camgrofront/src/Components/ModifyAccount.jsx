@@ -4,6 +4,7 @@ import Button from './Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Error from './Error';
 
 function Modify(props) {
 	const navigate = useNavigate();
@@ -34,18 +35,23 @@ function Modify(props) {
 	const [emailTouch, setEmailTouch] = useState(false);
 	const [departmentTouch, setDepartmentTouch] = useState(false);
 	const [cityTouch, setCityTouch] = useState(false);
+	const [err, setErr] = useState(false)
+	const [errMess, setErrMess] = useState('')
 
 	useEffect(() => {
 		if (!props.token && !props.person && !props.email) {
 			navigate('/login');
 			return
 		}
-		loadCities(
-			props.person.place.namePlace,
-			props.person.place.lugIdLug.namePlace,
-			places,
-			setCities,
-		);
+		if(places.length > 0){
+			console.log(props.person)
+			loadCities(
+				props.person.place.namePlace,
+				props.person.place.lugIdLug.namePlace,
+				places,
+				setCities,
+			);
+		}
 		if(places.length <= 0){
 			loadPlaces(setPlaces)
 		}
@@ -66,13 +72,20 @@ function Modify(props) {
 		fetch(url, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin' : '*',
+						'Access-Control-Allow-Methods' : '*',
+						'Access-Control-Allow-Headers' : '*',
+						'Access-Control-Allow-Credentials' : 'true',
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${props.token}`
 			},
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				navigate('/');
+				setErr(true)
+				setErrMess(json.message)
+				navigate('/modify-account');
 			})
 			.catch((err) => console.log(err));
 	};
@@ -89,6 +102,9 @@ function Modify(props) {
 
 	return (
 		<div className={Styles.containerFormRegister}>
+			{ err &&
+				<Error message={errMess} func={() => setErr(!err)}/>
+			}
 			<form>
 				<h1 className={Styles.textTitle}>Modificar cuenta</h1>
 				<hr className={Styles.line} />

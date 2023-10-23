@@ -1,0 +1,30 @@
+@import url('./variables.css');
+.container{
+    display: flex;
+    width: 150px;
+    height: 150px;
+    justify-content: space-evenly;
+    background-color: rgb(var(--color-verde-fondo));
+    border: 2px solid;
+    border-color: rgb(var(--color-verde-boton));
+	border-radius: 5%/5%;
+    align-items: center;
+    justify-content: center;
+}
+.images{
+    display: flex;
+    flex-wrap: wrap;
+}
+.upload{
+    cursor: pointer;
+}
+.imageAdd{
+    width: 35px;
+}
+.image{
+    width: 10px;
+}
+.addImage {
+    width: 100px;
+    display: none;
+}

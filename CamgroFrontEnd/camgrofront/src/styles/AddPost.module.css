@@ -1,5 +1,5 @@
 @import url(./variables.css);
-.containerFormRegister{
+.container{
     width: 90vw;
     height: 70vh;
     background-color: white;
@@ -15,31 +15,31 @@
     padding-top: 10px;
     color: black;
 }
-
 .line{
     margin-right: 10px;
     margin-left: 10px;
     border: none; 
     border-top: 1.5px solid rgb(var(--color-verde-fondo));
 }
-
 .content{
-    height: 70%;
     margin-top: 8vh;
     margin-bottom: 2vh;
     margin-left: 4vw;
     margin-right: 2vw;
 }
-
-.submit{
-
-    margin: 0 2vw 3vw 2vw;
-    height: 15%;
+.containerInputs{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 55vh;
+    margin-top: -50px;
+}
+.inputArea{
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
-
 .label{
     font-family: 'Century Gothic';
 	color: rgb(var(--color-verde-boton));
@@ -48,10 +48,18 @@
     width: 18vw;
     
 }
-
-.input, .select{
+.input, select{
     border-radius: 11px;
     border-color: rgb(var(--color-verde-boton));
+    width: 16vw;
+    height: 2.6vh;
+    display: inline-block;
+    font-family: 'Century Gothic';
+}
+
+.inputRed{
+    border-radius: 11px;
+    border-color: red;
     width: 16vw;
     height: 2.6vh;
     display: inline-block;
@@ -61,36 +69,14 @@
     height: 4vh;
     width: 16.5vw;
 }
-
-.inputArea{
-    margin-top: 5vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.containerInputs{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: 50vh;
-}
-.inputRed{
-    border-radius: 11px;
-    border-color: red;
-    width: 16vw;
-    height: 2.6vh;
-    display: inline-block;
-    font-family: 'Century Gothic';
-}
-.selectRed{
-    height: 4vh;
-    display: inline-block;
-    font-family: 'Century Gothic';
-    border-radius: 11px;
-    border-color: red;
-    width: 16.5vw;
-}
 .disabled{
     pointer-events: none;
+}
+.submit{
+
+    margin: 0 2vw 3vw 2vw;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

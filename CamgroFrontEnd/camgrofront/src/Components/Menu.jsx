@@ -13,7 +13,7 @@ function Menu() {
 					</Link>
 				</li>
 				<li>
-					<Link className={styles.option}>
+					<Link to='/add-post' className={styles.option}>
 						<img src={images.addPost} alt='icon add post' className={styles.img} />
 						<span className={styles.text}>Agregar publicación </span>
 					</Link>
