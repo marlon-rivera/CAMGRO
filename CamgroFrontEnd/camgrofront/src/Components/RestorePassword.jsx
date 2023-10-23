@@ -5,8 +5,10 @@ import styles from './../styles/RestorePassword.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { images } from './Images';
 import { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
-function RestorePassword() {
+function RestorePassword(props) {
 	const navigate = useNavigate();
 
 	const [vEmail, setVEmail] = useState(true);
@@ -94,8 +96,11 @@ function RestorePassword() {
 					setError(true)
 					setErrMessage(r.message)
 				} else {
-					console.log(r);
-					navigate('/login');
+					if(props.isLogged){
+						navigate('/')
+					}else{
+						navigate('/login');
+					}
 				}
 			})
 			.catch((err) => console.log('Catch: ' + err.message));
@@ -219,4 +224,14 @@ function RestorePassword() {
 	);
 }
 
-export default RestorePassword;
+function mapStateToProps(state){
+	return {
+		isLogged : state.login
+	}
+}
+
+RestorePassword.propTypes = {
+	isLogged: PropTypes.bool
+}
+
+export default connect(mapStateToProps, null)(RestorePassword);

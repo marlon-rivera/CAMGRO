@@ -6,7 +6,7 @@ import styles from './../styles/Login.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import Error from './Error';
 import { connect } from 'react-redux';
-import { updateToken, login } from '../redux/actions/actionsCreators';
+import { updateToken, login, updateInfoPerson, updateEmail } from '../redux/actions/actionsCreators';
 import PropTypes from 'prop-types';
 
 function Login(props) {
@@ -33,10 +33,6 @@ function Login(props) {
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				const headers = new Headers();
-
-				headers.append('Content-Type', 'application/json');
-				headers.append('Authorization', 'Bearer ' + json.token);
 
 				navigate('/');
 				props.updateToken(json.token);
@@ -45,16 +41,20 @@ function Login(props) {
 					email,
 				};
 				fetch(`http://localhost:8080/person/search/${email}`, {
-					mode: 'no-cors',
 					method: 'GET',
 					headers : {
+						'Access-Control-Allow-Origin' : '*',
+						'Access-Control-Allow-Methods' : '*',
+						'Access-Control-Allow-Headers' : '*',
+						'Access-Control-Allow-Credentials' : 'true',
 						'Content-Type': 'application/json',
-						'Authorization': json.token
+						'Authorization': `Bearer ${json.token}`
 					},
 				})
 					.then((r) => r.json())
 					.then((r) => {
-						console.log(r);
+						props.updateEmail(email)
+						props.updateInfoPerson(r)
 					})
 					.catch(err => console.log(err));
 			})
@@ -128,12 +128,16 @@ function Login(props) {
 Login.propTypes = {
 	updateToken: PropTypes.func,
 	login: PropTypes.func,
+	updateInfoPerson : PropTypes.func,
+	updateEmail: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
 	return {
 		updateToken: (token) => dispatch(updateToken(token)),
 		login: (loginBool) => dispatch(login(loginBool)),
+		updateInfoPerson: (person) => dispatch(updateInfoPerson(person)),
+		updateEmail : (email) => dispatch(updateEmail(email))
 	};
 }
 

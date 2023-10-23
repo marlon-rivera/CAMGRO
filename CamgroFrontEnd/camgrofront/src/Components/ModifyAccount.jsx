@@ -3,18 +3,30 @@ import Styles from './../styles/Register.module.css';
 import Button from './Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 function Modify(props) {
+	const navigate = useNavigate();
+
 	const [places, setPlaces] = useState([]);
-	const [department, setDepartment] = useState('');
+	const [department, setDepartment] = useState(
+		props.person ? props.person.place.lugIdLug.namePlace : null,
+	);
 	const [cities, setCities] = useState([]);
-	const [city, setCity] = useState('');
-	const [name, setName] = useState('');
-	const [lastname, setLastname] = useState('');
-	const [phone, setPhone] = useState('');
-	const [address, setAddress] = useState('');
-	const [email, setEmail] = useState('');
+	const [city, setCity] = useState(
+		props.person ? props.person.place.namePlace : null,
+	);
+	const [name, setName] = useState(
+		props.person ? props.person.name.split(' ')[0] : null,
+	);
+	const [lastname, setLastname] = useState(
+		props.person ? props.person.name.split(' ')[1] : null,
+	);
+	const [phone, setPhone] = useState(props.person ? props.person.phone : null);
+	const [address, setAddress] = useState(
+		props.person ? props.person.address : null,
+	);
+	const [email, setEmail] = useState(props.person ? props.email : null);
 	const [nameTouch, setNameTouch] = useState(false);
 	const [lastNameTouch, setLastNameTouch] = useState(false);
 	const [phoneTouch, setPhoneTouch] = useState(false);
@@ -22,35 +34,35 @@ function Modify(props) {
 	const [emailTouch, setEmailTouch] = useState(false);
 	const [departmentTouch, setDepartmentTouch] = useState(false);
 	const [cityTouch, setCityTouch] = useState(false);
-	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log("token: ", props.token)
-		if(!props.token){
-			navigate('/login')
+		if (!props.token && !props.person && !props.email) {
+			navigate('/login');
+			return
 		}
-		handleOnChangeDepartment();
-	}, [department]);
-
-	const handleOnChangeDepartment = () => {
-		for (let i = 0; i < places.length; i++) {
-			if (places[i].departamento === department) {
-				setCities(places[i].ciudades);
-			}
+		loadCities(
+			props.person.place.namePlace,
+			props.person.place.lugIdLug.namePlace,
+			places,
+			setCities,
+		);
+		if(places.length <= 0){
+			loadPlaces(setPlaces)
 		}
-	};
+	}, [places]);
 
+	// TODO
 	const handleSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		const data = {
-			name : `${name} ${lastname}`,
+			name: `${name} ${lastname}`,
 			phone,
 			address,
 			city,
 			department,
-			email
+			email,
 		};
-		 const url = 'http://localhost:8080/person/modify-account';
+		const url = 'http://localhost:8080/person/modify';
 		fetch(url, {
 			method: 'POST',
 			headers: {
@@ -59,10 +71,11 @@ function Modify(props) {
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
-			.then((json) => {navigate('/')})
+			.then((json) => {
+				navigate('/');
+			})
 			.catch((err) => console.log(err));
 	};
-	loadPlaces(setPlaces);
 
 	const handleSumbitPhone = (e) => {
 		if (e.target.value.length <= 10) {
@@ -71,15 +84,7 @@ function Modify(props) {
 	};
 
 	const verifyAllInputsFull = () => {
-		return (
-			name &&
-			lastname &&
-			phone &&
-			address &&
-			email &&
-			department &&
-			city
-		);
+		return name && lastname && phone && address && email && department && city;
 	};
 
 	return (
@@ -166,7 +171,7 @@ function Modify(props) {
 									setEmail(e.target.value);
 								}}
 								required
-                                disabled={true}
+								disabled={true}
 							/>
 						</div>
 						<div className={Styles.inputArea}>
@@ -217,15 +222,14 @@ function Modify(props) {
 						</div>
 						<div className={Styles.inputArea}>
 							<label className={Styles.label}>Contraseña:</label>
-                            <div>
-                                <Button
-                                text='Cambiar Contraseña'
-                                func={navigate}
-                                path='/login/restore-password'
-                                />
-                            </div>							
+							<div>
+								<Button
+									text='Cambiar Contraseña'
+									func={navigate}
+									path='/login/restore-password'
+								/>
+							</div>
 						</div>
-						
 					</div>
 				</div>
 				<div className={Styles.submit}>
@@ -241,22 +245,34 @@ function Modify(props) {
 	);
 }
 
-async function loadPlaces(call) {
-	await fetch(
+function loadPlaces(call) {
+	fetch(
 		'https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json',
 	)
 		.then((r) => r.json())
-		.then((r) => call(r));
+		.then((r) => {call(r)});
+}
+
+function loadCities(c, d, places, call) {
+	for (let i = 0; i < places.length; i++) {
+		if (places[i].departamento === d) {
+			call(places[i].ciudades);
+		}
+	}
 }
 
 Modify.propTypes = {
-	token: PropTypes.string
-}
+	token: PropTypes.string,
+	email: PropTypes.string,
+	person: PropTypes.any,
+};
 
-function mapStateToProps(state){
-	return{
-		token: state.token
-	}
+function mapStateToProps(state) {
+	return {
+		token: state.token,
+		email: state.email,
+		person: state.person,
+	};
 }
 
 export default connect(mapStateToProps, null)(Modify);
