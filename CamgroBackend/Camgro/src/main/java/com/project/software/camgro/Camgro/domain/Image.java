@@ -21,7 +21,7 @@ public class Image {
     @JoinColumn(name="id_publicacion")
     private Post post;
     @Column(name="url_image")
-    private String url;
+    private byte[] url;
     @Column(name="nombre_image")
     private String nameImage;
     @Column(name="fecha_carga")
