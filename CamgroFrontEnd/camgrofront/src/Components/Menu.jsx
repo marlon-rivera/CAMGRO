@@ -25,7 +25,8 @@ function Menu() {
 					</Link>
 				</li>
 				<li>
-					<Link className={styles.option}v>
+					<Link to='/my-posts'
+					 className={styles.option}v>
 						<img src={images.posts} alt='icon posts' className={styles.img} />
 						<span className={styles.text}>Mis publicaciones </span>
 					</Link>

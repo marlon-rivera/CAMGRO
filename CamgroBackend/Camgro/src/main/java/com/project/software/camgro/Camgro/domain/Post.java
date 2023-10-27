@@ -29,7 +29,7 @@ public class Post {
     private int amountProducts;
     @Column(name="titulo_publicacion")
     private String postTitle;
-    @Column(name="descipcion_publicacion")
+    @Column(name="descripcion_publicacion")
     private String descriptionPost;
     @Column(name="fecha_publicacion")
     private LocalDate publicationDate;

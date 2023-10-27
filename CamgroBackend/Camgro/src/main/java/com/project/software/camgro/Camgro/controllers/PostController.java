@@ -1,9 +1,11 @@
 package com.project.software.camgro.Camgro.controllers;
 
 import com.project.software.camgro.Camgro.domain.*;
+import com.project.software.camgro.Camgro.records.ResponseAllPosts;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
 import com.project.software.camgro.Camgro.repositories.ImageRepository;
 import com.project.software.camgro.Camgro.repositories.PersonRepository;
+import com.project.software.camgro.Camgro.repositories.PostRepository;
 import com.project.software.camgro.Camgro.services.AccountService;
 import com.project.software.camgro.Camgro.services.ImageService;
 import com.project.software.camgro.Camgro.services.PostService;
@@ -24,6 +26,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +40,7 @@ public class PostController {
     private final AccountRepository accountRepository;
     private final ImageService imageService;
     private final PersonRepository personRepository;
+    private final PostRepository postRepository;
 
     @PostMapping(value = "add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addPost(@RequestPart("name") String name, @RequestPart("description") String description, @RequestPart("price") String price, @RequestPart("unit") String unit, @RequestPart("postDate") String postDate, @RequestPart("harvestDate") String harvestDate, @RequestPart("quantity") String quantity, @RequestPart("postState") String postState, @RequestPart("image") MultipartFile image, @RequestPart("id_person") String id_person){
@@ -43,19 +48,32 @@ public class PostController {
         int quantityInt = Integer.parseInt(quantity);
         LocalDate postDateDate = LocalDate.parse(postDate);
         LocalDate harvestDateDate = LocalDate.parse(harvestDate);
-        System.out.println(id_person);
         Optional<Person> person = personRepository.findById(id_person);
-        System.out.println(person.get().getName());
         Optional<Account> account = accountRepository.findByPerson(person.get());
-
         try {
             Post post = new Post(postService.getNewId(), account.get(), account.get().getPerson().getPlace(), priceDouble, quantityInt, name, description, postDateDate, harvestDateDate, unit, postState);
             Image imageSend = new Image(imageService.getNewId(), post, image.getBytes(), image.getName(), postDateDate);
-            System.out.println(imageSend.getPost().getIdPost());
+            postRepository.save(post);
+            imageRepository.save(imageSend);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(new ErrorMesage("No se pudo subir la publicacion"));
         }
 
-        return ResponseEntity.ok("Todo bien");
+        return ResponseEntity.ok(new ErrorMesage("Publicacion guardada correctamente."));
     }
+
+    @GetMapping(value = "all/{email}")
+    public ResponseEntity<?> getAllPosts(@PathVariable("email") String email){
+        Account account = accountRepository.findAccountByEmail(email).get();
+        Optional<List<Post>> posts = postRepository.findAllByAccount(account);
+        List<ResponseAllPosts> allPosts = new ArrayList<>();
+        for (Post post:
+             posts.get()) {
+            List<Image> images = imageRepository.findAllByPost(post).get();
+
+            allPosts.add(new ResponseAllPosts(post.getAmountProducts(), post.getPostStatus(), post.getDescriptionPost(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(),images.get(0).getUrl()));
+        }
+        return ResponseEntity.ok(allPosts);
+    }
+
 }

@@ -15,14 +15,14 @@ import java.time.LocalDate;
 public class Image {
 
     @Id
-    @Column(name="id_iamgenes")
+    @Column(name="id_imagenes")
     private String idImage;
     @ManyToOne
     @JoinColumn(name="id_publicacion")
     private Post post;
-    @Column(name="url_image")
+    @Column(name="url_imagen")
     private byte[] url;
-    @Column(name="nombre_image")
+    @Column(name="nombre_imagen")
     private String nameImage;
     @Column(name="fecha_carga")
     private LocalDate uploadDate;

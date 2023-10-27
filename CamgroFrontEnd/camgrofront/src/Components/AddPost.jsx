@@ -2,6 +2,7 @@ import UploadImages from './UploadImages';
 import styles from './../styles/AddPost.module.css';
 import { useEffect, useState } from 'react';
 import Button from './Button';
+import Error from './Error'
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -26,6 +27,8 @@ function AddPost(props) {
 	const [postStateTouch, setPostStateTouch] = useState(false);
 	const [image, setImage] = useState();
 	const [reallyImage, setReallyImage] = useState()
+	const [error, setError] = useState(false)
+	const [errMess, setErrMess] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -64,7 +67,6 @@ function AddPost(props) {
 		formData.append('image', reallyImage);
 		formData.append('id_person', props.id)
 		
-		console.log(props.id);
 		fetch('http://localhost:8080/post/add', {
 			method: 'POST',
 			headers: {
@@ -77,25 +79,24 @@ function AddPost(props) {
 			body: formData,
 		})
 			.then((r) => r.json())
-			.then((r) => console.log(r));
-		/* 
-		try {
-			
-		  const response = await fetch('http://tu-backend.com/uploadWithInfo', {
-			method: 'POST',
-			body: formData,
-		  });
-		  const responseData = await response.json();
-		  console.log('Data with file uploaded successfully', responseData);
-		} catch (error) {
-		  console.error('Error uploading data with file', error);
-		}
-		*/
+			.then((r) =>{
+				setErrMess(r.message)
+				setError(true)
+			})
+			.catch(err => {
+				console.log(err)
+				setErrMess("No se pudo guardar la publicacion.");
+				setError(true);
+			});
+		
 	};
 
 	return (
 		<section className={styles.container}>
 			<form>
+				{error && 
+					<Error func={() => setError(false)} message={errMess} />
+				}
 				<h1 className={styles.textTitle}>Agregar Producto</h1>
 				<hr className={styles.line} />
 				<div className={styles.content}>

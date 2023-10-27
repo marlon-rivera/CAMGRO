@@ -23,6 +23,7 @@ import posts from './../Static/posts.png'
 import logout from './../Static/logout.png'
 import plus from './../Static/plus.png'
 import plusInv from './../Static/plusInv.png'
+import prueba from './../Static/papa.jpg'
 
 export const images = {
 	house,
@@ -49,5 +50,6 @@ export const images = {
 	posts,
 	logout,
 	plus,
-	plusInv
+	plusInv, 
+	prueba
 };

@@ -1,0 +1,100 @@
+@import url('./variables.css');
+.container{
+    width: 90vw;
+    height: 70vh;
+    margin-top:  5vh;
+    margin-bottom:  5vh;
+    margin-left:  5vw;
+    margin-right:  5vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.posts{
+    margin-top: 25px;
+    width: 95%;
+    overflow: auto; 
+}
+
+.posts::-webkit-scrollbar {
+    width: 15px;
+}
+
+.posts::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.posts::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-verde-boton)); 
+    border-radius: 10px;
+    padding: 2px;
+    border: 3px solid transparent;
+    background-clip: content-box; 
+}
+
+.textTitle{
+    font-size: 3.5vw;
+    font-family: 'Century Gothic';
+    margin: 10px;
+    padding-top: 10px;
+    color: white;
+    align-self: flex-start;
+}
+.myPost{
+    margin: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.containerInfo{
+ background-color: rgba(255, 255, 255, 0.2);   
+ width: 80%;
+ height: 12vw;
+ border-radius: 5%/20%;
+ display: flex;
+ flex-direction: column;
+ padding: 15px;
+}
+.title{
+    display: inline-block;
+    width: 500px;
+    color: white;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+}
+.infoPost{
+    align-self: flex-start;
+    margin: 10px;
+}
+.price{
+    color: white;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+}
+.description{
+    color: white;
+    font-family: 'Century Gothic';
+    font-size: 20px;
+}
+.state{
+    color: white;
+    font-family: 'Century Gothic';
+    font-size: 20px;
+}
+.image{
+    width: 14vw;
+    height: 14vw;
+    border-radius: 20%/20%;
+}
+.line{
+    border: none; 
+    border-top: 1.5px solid white;
+}
+.modify{
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    margin-top: -10px;
+    margin-right: 5px;
+}
