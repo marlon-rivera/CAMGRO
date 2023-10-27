@@ -76,6 +76,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.egit.github</groupId>
+			<artifactId>org.eclipse.egit.github.core</artifactId>
+			<version>3.1.2</version> <!-- Asegúrate de usar la última versión disponible -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

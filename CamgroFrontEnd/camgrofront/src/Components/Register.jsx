@@ -3,8 +3,10 @@ import Button from './Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Error from './Error';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
-function Register() {
+function Register(props) {
 	const [places, setPlaces] = useState([]);
 	const [department, setDepartment] = useState('');
 	const [cities, setCities] = useState([]);
@@ -31,6 +33,9 @@ function Register() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		if(!props.token){
+			navigate("/")
+		}
 		handleOnChangeDepartment();
 	}, [department, secondPassword, password, correctPass]);
 	const handleOnChangeDepartment = () => {
@@ -299,4 +304,14 @@ async function loadPlaces(call) {
 		.then((r) => call(r));
 }
 
-export default Register;
+function mapStateToProps(state) {
+	return{
+		token: state.token
+	}
+}
+
+Register.propTypes = {
+	token: PropTypes.string
+}
+
+export default connect(mapStateToProps)(Register);

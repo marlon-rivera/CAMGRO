@@ -1,12 +1,14 @@
-import { useState, useRef } from 'react';
 import styles from './../styles/UploadImages.module.css';
 import CardImage from './CardImage';
 import { images } from './Images';
-function UploadImages() {
-	const [image, setImage] = useState();
+import { useRef } from 'react';
+import PropTypes from 'prop-types'
+
+function UploadImages(props) {
+	
 
 	const handleImageRemove = (index) => {
-		setImage();
+		props.setImage();
 	};
 
 	const handleFileChange = (event) => {
@@ -14,7 +16,8 @@ function UploadImages() {
 		if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target.result);
+		props.setReallyImage(file)
+        props.setImage(e.target.result);
       };
       reader.readAsDataURL(file);
 		}
@@ -29,10 +32,10 @@ function UploadImages() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.images}>
-				{image && <CardImage image={image} func={() => handleImageRemove()} />}
+				{props.image && <CardImage image={props.image} func={() => handleImageRemove()} />}
 			</div>
 			<div>
-				{!image && (
+				{!props.image && (
 					<div
 						className={styles.upload}
 						onClick={handleFileUpload}
@@ -51,6 +54,13 @@ function UploadImages() {
 			</div>
 		</div>
 	);
+}
+
+UploadImages.propTypes = {
+	image: PropTypes.any,
+	setImage: PropTypes.func,
+	setReallyImage: PropTypes.func,
+	reallyImage: PropTypes.any
 }
 
 export default UploadImages;

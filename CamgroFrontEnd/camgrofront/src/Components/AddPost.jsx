@@ -1,7 +1,10 @@
 import UploadImages from './UploadImages';
 import styles from './../styles/AddPost.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 function AddPost(props) {
 	const [name, setName] = useState();
@@ -20,17 +23,66 @@ function AddPost(props) {
 	const [quantity, setQuantity] = useState();
 	const [quantityTouch, setQuantityTouch] = useState(false);
 	const [postState, setPostState] = useState();
-	const [postStateTouch, setPostStateTouch] = useState(false)
+	const [postStateTouch, setPostStateTouch] = useState(false);
+	const [image, setImage] = useState();
+	const [reallyImage, setReallyImage] = useState()
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!props.token) {
+			navigate('/login');
+		}
+	}, []);
 
 	loadUnits(setUnits);
 
-	const verifyAllInputsFull = () =>{
-		return name && description && price && unit & postDate && harvestDate && quantity & postState
-	}
+	const verifyAllInputsFull = () => {
+		return (
+			image &&
+			name &&
+			description &&
+			price &&
+			unit &&
+			postDate &&
+			harvestDate &&
+			quantity &&
+			postState
+		);
+	};
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-	}
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const formData = new FormData();
+		formData.append('image', reallyImage);
+		
+		console.log(formData.get('image'));
+		fetch('http://localhost:8080/post/add', {
+			method: 'POST',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Authorization': `Bearer ${props.token}`,
+			},
+			body: formData,
+		})
+			.then((r) => r.json())
+			.then((r) => console.log(r));
+		/* 
+		try {
+			
+		  const response = await fetch('http://tu-backend.com/uploadWithInfo', {
+			method: 'POST',
+			body: formData,
+		  });
+		  const responseData = await response.json();
+		  console.log('Data with file uploaded successfully', responseData);
+		} catch (error) {
+		  console.error('Error uploading data with file', error);
+		}
+		*/
+	};
 
 	return (
 		<section className={styles.container}>
@@ -41,7 +93,7 @@ function AddPost(props) {
 					<div className={styles.containerInputs}>
 						<div className={styles.inputArea}>
 							<label className={styles.label}>Fotos: *</label>
-							<UploadImages />
+							<UploadImages setImage={setImage} image={image} setReallyImage={setReallyImage} />
 						</div>
 						<div className={styles.inputArea}>
 							<label className={styles.label}>Nombre: *</label>
@@ -160,7 +212,9 @@ function AddPost(props) {
 							<label className={styles.label}>Estado de publicación:*</label>
 							<select
 								className={
-									!postState && postStateTouch ? styles.selectRed : styles.select
+									!postState && postStateTouch
+										? styles.selectRed
+										: styles.select
 								}
 								value={postState}
 								onBlur={() => setPostStateTouch(true)}
@@ -198,4 +252,16 @@ async function loadUnits(call) {
 		.then((r) => call(r));
 }
 
-export default AddPost;
+function mapStateToProps(state) {
+	return {
+		token: state.token,
+		id: state.idPerson,
+	};
+}
+
+AddPost.propTypes = {
+	idPerson: PropTypes.string,
+	token: PropTypes.string,
+};
+
+export default connect(mapStateToProps)(AddPost);
