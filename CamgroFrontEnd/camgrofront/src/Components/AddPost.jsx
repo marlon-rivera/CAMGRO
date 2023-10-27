@@ -53,9 +53,18 @@ function AddPost(props) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = new FormData();
+		formData.append('name', name)
+		formData.append('description', description)
+		formData.append('price', price)
+		formData.append('unit', unit)
+		formData.append('postDate',  postDate)
+		formData.append('harvestDate', harvestDate)
+		formData.append('quantity', quantity)
+		formData.append('postState', postState)
 		formData.append('image', reallyImage);
+		formData.append('id_person', props.id)
 		
-		console.log(formData.get('image'));
+		console.log(props.id);
 		fetch('http://localhost:8080/post/add', {
 			method: 'POST',
 			headers: {
@@ -255,12 +264,12 @@ async function loadUnits(call) {
 function mapStateToProps(state) {
 	return {
 		token: state.token,
-		id: state.idPerson,
+		id: state.person.id,
 	};
 }
 
 AddPost.propTypes = {
-	idPerson: PropTypes.string,
+	id: PropTypes.string,
 	token: PropTypes.string,
 };
 
