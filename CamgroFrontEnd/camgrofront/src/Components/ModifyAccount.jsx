@@ -44,7 +44,6 @@ function Modify(props) {
 			return
 		}
 		if(places.length > 0){
-			console.log(props.person)
 			loadCities(
 				props.person.place.namePlace,
 				props.person.place.lugIdLug.namePlace,

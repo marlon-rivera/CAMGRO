@@ -66,6 +66,7 @@
 .infoPost{
     align-self: flex-start;
     margin: 10px;
+    cursor: pointer;
 }
 .price{
     color: white;
@@ -83,6 +84,7 @@
     font-size: 20px;
 }
 .image{
+    cursor: pointer;
     width: 14vw;
     height: 14vw;
     border-radius: 20%/20%;

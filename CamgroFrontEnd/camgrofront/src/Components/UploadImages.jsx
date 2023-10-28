@@ -2,11 +2,9 @@ import styles from './../styles/UploadImages.module.css';
 import CardImage from './CardImage';
 import { images } from './Images';
 import { useRef } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 function UploadImages(props) {
-	
-
 	const handleImageRemove = (index) => {
 		props.setImage();
 	};
@@ -14,12 +12,13 @@ function UploadImages(props) {
 	const handleFileChange = (event) => {
 		const file = event.target.files[0];
 		if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-		props.setReallyImage(file)
-        props.setImage(e.target.result);
-      };
-      reader.readAsDataURL(file);
+			console.log(file);
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				props.setReallyImage(file);
+				props.setImage(e.target.result);
+			};
+			reader.readAsDataURL(file);
 		}
 	};
 
@@ -32,7 +31,16 @@ function UploadImages(props) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.images}>
-				{props.image && <CardImage image={props.image} func={() => handleImageRemove()} />}
+				{props.image && (
+					<CardImage
+						image={
+							!props.image.includes('data:image/jpeg;base64,')
+								? `data:image/jpeg;base64,${props.image}`
+								: props.image
+						}
+						func={() => handleImageRemove()}
+					/>
+				)}
 			</div>
 			<div>
 				{!props.image && (
@@ -44,7 +52,7 @@ function UploadImages(props) {
 						<img src={images.plus} alt='' className={styles.imageAdd} />
 						<input
 							type='file'
-              accept='image/*'
+							accept='image/*'
 							ref={fileInputRef}
 							onChange={handleFileChange}
 							style={{ display: 'none' }}
@@ -60,7 +68,7 @@ UploadImages.propTypes = {
 	image: PropTypes.any,
 	setImage: PropTypes.func,
 	setReallyImage: PropTypes.func,
-	reallyImage: PropTypes.any
-}
+	reallyImage: PropTypes.any,
+};
 
 export default UploadImages;

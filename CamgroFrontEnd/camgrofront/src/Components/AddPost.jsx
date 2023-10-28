@@ -66,7 +66,7 @@ function AddPost(props) {
 		formData.append('postState', postState)
 		formData.append('image', reallyImage);
 		formData.append('id_person', props.id)
-		
+		console.log(formData.get('image'))
 		fetch('http://localhost:8080/post/add', {
 			method: 'POST',
 			headers: {
@@ -82,6 +82,7 @@ function AddPost(props) {
 			.then((r) =>{
 				setErrMess(r.message)
 				setError(true)
+				navigate('/my-posts')
 			})
 			.catch(err => {
 				console.log(err)
@@ -97,7 +98,7 @@ function AddPost(props) {
 				{error && 
 					<Error func={() => setError(false)} message={errMess} />
 				}
-				<h1 className={styles.textTitle}>Agregar Producto</h1>
+				<h1 className={styles.textTitle}>Agregar Publicacion</h1>
 				<hr className={styles.line} />
 				<div className={styles.content}>
 					<div className={styles.containerInputs}>

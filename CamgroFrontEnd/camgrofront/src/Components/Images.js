@@ -24,6 +24,14 @@ import logout from './../Static/logout.png'
 import plus from './../Static/plus.png'
 import plusInv from './../Static/plusInv.png'
 import prueba from './../Static/papa.jpg'
+import save from './../Static/save.png'
+import saveInv from './../Static/saveInv.png'
+import chat from './../Static/chat.png'
+import chatInv from './../Static/chatInv.png'
+import arrowR from './../Static/arrowR.png'
+import arrowRInv from './../Static/arrowRINV.png'
+import arrowL from './../Static/arrowL.png'
+import arrowLInv from './../Static/arrowLINV.png'
 
 export const images = {
 	house,
@@ -51,5 +59,13 @@ export const images = {
 	logout,
 	plus,
 	plusInv, 
-	prueba
+	prueba,
+	save,
+	saveInv,
+	chat,
+	chatInv,
+	arrowR,
+	arrowRInv,
+	arrowL,
+	arrowLInv
 };

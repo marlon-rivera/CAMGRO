@@ -12,6 +12,7 @@ public interface ImageRepository extends JpaRepository<Image, String> {
 
     Optional<Image> findTopByOrderByIdImageDesc();
 
+    Optional<Image> findByUrl(byte[] url);
     Optional<List<Image>> findAllByPost(Post post);
 
 }

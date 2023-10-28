@@ -29,6 +29,7 @@ public class SecurityConf {
               .authorizeHttpRequests(authRequest ->
                       authRequest
                               .requestMatchers("/auth/**").permitAll()
+                              .requestMatchers("/post/all").permitAll()
                               .anyRequest().authenticated()
                         )
               .sessionManagement(sessionManager ->
