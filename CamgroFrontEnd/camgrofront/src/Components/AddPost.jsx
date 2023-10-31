@@ -2,10 +2,12 @@ import UploadImages from './UploadImages';
 import styles from './../styles/AddPost.module.css';
 import { useEffect, useState } from 'react';
 import Button from './Button';
-import Error from './Error'
+import Error from './Error';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { BounceLoader } from 'react-spinners';
+import stylesLoading from './../styles/Loading.module.css';
 
 function AddPost(props) {
 	const [name, setName] = useState();
@@ -26,9 +28,10 @@ function AddPost(props) {
 	const [postState, setPostState] = useState();
 	const [postStateTouch, setPostStateTouch] = useState(false);
 	const [image, setImage] = useState();
-	const [reallyImage, setReallyImage] = useState()
-	const [error, setError] = useState(false)
+	const [reallyImage, setReallyImage] = useState();
+	const [error, setError] = useState(false);
 	const [errMess, setErrMess] = useState();
+	const [ready, setReady] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -54,19 +57,20 @@ function AddPost(props) {
 	};
 
 	const handleSubmit = async (e) => {
+		setReady(true);
 		e.preventDefault();
 		const formData = new FormData();
-		formData.append('name', name)
-		formData.append('description', description)
-		formData.append('price', price)
-		formData.append('unit', unit)
-		formData.append('postDate',  postDate)
-		formData.append('harvestDate', harvestDate)
-		formData.append('quantity', quantity)
-		formData.append('postState', postState)
+		formData.append('name', name);
+		formData.append('description', description);
+		formData.append('price', price);
+		formData.append('unit', unit);
+		formData.append('postDate', postDate);
+		formData.append('harvestDate', harvestDate);
+		formData.append('quantity', quantity);
+		formData.append('postState', postState);
 		formData.append('image', reallyImage);
-		formData.append('id_person', props.id)
-		console.log(formData.get('image'))
+		formData.append('id_person', props.id);
+		console.log(formData.get('image'));
 		fetch('http://localhost:8080/post/add', {
 			method: 'POST',
 			headers: {
@@ -74,37 +78,51 @@ function AddPost(props) {
 				'Access-Control-Allow-Methods': '*',
 				'Access-Control-Allow-Headers': '*',
 				'Access-Control-Allow-Credentials': 'true',
-				'Authorization': `Bearer ${props.token}`,
+				Authorization: `Bearer ${props.token}`,
 			},
 			body: formData,
 		})
 			.then((r) => r.json())
-			.then((r) =>{
-				setErrMess(r.message)
-				setError(true)
-				navigate('/my-posts')
+			.then((r) => {
+				setReady(false);
+				setErrMess(r.message);
+				setError(true);
+				navigate('/my-posts');
 			})
-			.catch(err => {
-				console.log(err)
-				setErrMess("No se pudo guardar la publicacion.");
+			.catch((err) => {
+				setReady(false);
+				console.log(err);
+				setErrMess('No se pudo guardar la publicacion.');
 				setError(true);
 			});
-		
 	};
 
 	return (
 		<section className={styles.container}>
 			<form>
-				{error && 
-					<Error func={() => setError(false)} message={errMess} />
-				}
+				{error && <Error func={() => setError(false)} message={errMess} />}
+				{ready && (
+					<div className={stylesLoading.container}>
+						<BounceLoader
+							color={'#619002'}
+							loading={true}
+							className={stylesLoading.loading}
+							size={150}
+						/>
+						<p className={stylesLoading.p}>Cargando...</p>
+					</div>
+				)}
 				<h1 className={styles.textTitle}>Agregar Publicacion</h1>
 				<hr className={styles.line} />
 				<div className={styles.content}>
 					<div className={styles.containerInputs}>
 						<div className={styles.inputArea}>
 							<label className={styles.label}>Fotos: *</label>
-							<UploadImages setImage={setImage} image={image} setReallyImage={setReallyImage} />
+							<UploadImages
+								setImage={setImage}
+								image={image}
+								setReallyImage={setReallyImage}
+							/>
 						</div>
 						<div className={styles.inputArea}>
 							<label className={styles.label}>Nombre: *</label>

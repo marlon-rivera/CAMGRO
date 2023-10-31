@@ -11,6 +11,7 @@ import MyPosts from '../Components/MyPosts';
 import ModifyPost from '../Components/ModifyPost';
 import PostDetails from '../Components/PostDetails';
 import Catalog from '../Components/Catalog';
+import Results from '../Components/Results';
 
 function MainRouter() {
 	return (
@@ -26,6 +27,8 @@ function MainRouter() {
 				<Route path='/modify-post/:id' element={<><Header /> <ModifyPost /> </>} />
 				<Route path='/post/:id' element={<> <Header /> <PostDetails /> </>} />
 				<Route path='/catalog' element={<> <Header /> <Catalog /> </>} />
+				<Route path='/search/results/:searched' element={<> <Header /> <Results /> </>} />
+
 				<Route
 					path='*'
 					element={

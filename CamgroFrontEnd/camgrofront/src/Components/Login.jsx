@@ -6,17 +6,26 @@ import styles from './../styles/Login.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import Error from './Error';
 import { connect } from 'react-redux';
-import { updateToken, login, updateInfoPerson, updateEmail } from '../redux/actions/actionsCreators';
+import {
+	updateToken,
+	login,
+	updateInfoPerson,
+	updateEmail,
+} from '../redux/actions/actionsCreators';
 import PropTypes from 'prop-types';
+import { BounceLoader } from 'react-spinners';
+import stylesLoading from './../styles/Loading.module.css';
 
 function Login(props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(false);
+	const [ready, setReady] = useState(false);
 
 	const navigate = useNavigate();
 
 	const handleSubmit = (event) => {
+		setReady(true);
 		event.preventDefault();
 		let data = {
 			email,
@@ -33,7 +42,7 @@ function Login(props) {
 		})
 			.then((response) => response.json())
 			.then((json) => {
-
+				setReady(false);
 				navigate('/');
 				props.updateToken(json.token);
 				props.login(true);
@@ -42,23 +51,24 @@ function Login(props) {
 				};
 				fetch(`http://localhost:8080/person/search/${email}`, {
 					method: 'GET',
-					headers : {
-						'Access-Control-Allow-Origin' : '*',
-						'Access-Control-Allow-Methods' : '*',
-						'Access-Control-Allow-Headers' : '*',
-						'Access-Control-Allow-Credentials' : 'true',
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+						'Access-Control-Allow-Methods': '*',
+						'Access-Control-Allow-Headers': '*',
+						'Access-Control-Allow-Credentials': 'true',
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${json.token}`
+						Authorization: `Bearer ${json.token}`,
 					},
 				})
 					.then((r) => r.json())
 					.then((r) => {
-						props.updateEmail(email)
-						props.updateInfoPerson(r)
+						props.updateEmail(email);
+						props.updateInfoPerson(r);
 					})
-					.catch(err => console.log(err));
+					.catch((err) => console.log(err));
 			})
 			.catch(() => {
+				setReady(false);
 				setError(true);
 			});
 	};
@@ -70,11 +80,22 @@ function Login(props) {
 	return (
 		<div
 			className={
-				error
+				(error || ready)
 					? `${styles.disabled} ${styles.containerLogin}`
 					: styles.containerLogin
 			}
 		>
+			{ready && (
+				<div className={stylesLoading.container}>
+					<BounceLoader
+						color={'#619002'}
+						loading={true}
+						className={stylesLoading.loading}
+						size={150}
+					/>
+					<p className={stylesLoading.p}>Cargando...</p>
+				</div>
+			)}
 			<div className={styles.containerImg}>
 				<Link to='/'>
 					<img className={styles.img} src={images.logo} alt='CAMGRO' />
@@ -128,8 +149,8 @@ function Login(props) {
 Login.propTypes = {
 	updateToken: PropTypes.func,
 	login: PropTypes.func,
-	updateInfoPerson : PropTypes.func,
-	updateEmail: PropTypes.func
+	updateInfoPerson: PropTypes.func,
+	updateEmail: PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -137,7 +158,7 @@ function mapDispatchToProps(dispatch) {
 		updateToken: (token) => dispatch(updateToken(token)),
 		login: (loginBool) => dispatch(login(loginBool)),
 		updateInfoPerson: (person) => dispatch(updateInfoPerson(person)),
-		updateEmail : (email) => dispatch(updateEmail(email))
+		updateEmail: (email) => dispatch(updateEmail(email)),
 	};
 }
 

@@ -5,9 +5,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Error from './Error';
+import { BounceLoader } from 'react-spinners';
+import stylesLoading from './../styles/Loading.module.css';
 
 function Modify(props) {
 	const navigate = useNavigate();
+
+	const [ready, setReady] = useState(false);
 
 	const [places, setPlaces] = useState([]);
 	const [department, setDepartment] = useState(
@@ -35,15 +39,15 @@ function Modify(props) {
 	const [emailTouch, setEmailTouch] = useState(false);
 	const [departmentTouch, setDepartmentTouch] = useState(false);
 	const [cityTouch, setCityTouch] = useState(false);
-	const [err, setErr] = useState(false)
-	const [errMess, setErrMess] = useState('')
+	const [err, setErr] = useState(false);
+	const [errMess, setErrMess] = useState('');
 
 	useEffect(() => {
 		if (!props.token && !props.person && !props.email) {
 			navigate('/login');
-			return
+			return;
 		}
-		if(places.length > 0){
+		if (places.length > 0) {
 			loadCities(
 				props.person.place.namePlace,
 				props.person.place.lugIdLug.namePlace,
@@ -51,13 +55,14 @@ function Modify(props) {
 				setCities,
 			);
 		}
-		if(places.length <= 0){
-			loadPlaces(setPlaces)
+		if (places.length <= 0) {
+			loadPlaces(setPlaces);
 		}
 	}, [places]);
 
 	// TODO
 	const handleSubmit = (e) => {
+		setReady(true);
 		e.preventDefault();
 		const data = {
 			name: `${name} ${lastname}`,
@@ -71,22 +76,26 @@ function Modify(props) {
 		fetch(url, {
 			method: 'POST',
 			headers: {
-				'Access-Control-Allow-Origin' : '*',
-						'Access-Control-Allow-Methods' : '*',
-						'Access-Control-Allow-Headers' : '*',
-						'Access-Control-Allow-Credentials' : 'true',
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${props.token}`
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${props.token}`,
 			},
 			body: JSON.stringify(data),
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				setErr(true)
-				setErrMess(json.message)
+				setReady(false);
+				setErr(true);
+				setErrMess(json.message);
 				navigate('/modify-account');
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+				setReady(false);
+			});
 	};
 
 	const handleSumbitPhone = (e) => {
@@ -101,9 +110,18 @@ function Modify(props) {
 
 	return (
 		<div className={Styles.containerFormRegister}>
-			{ err &&
-				<Error message={errMess} func={() => setErr(!err)}/>
-			}
+			{err && <Error message={errMess} func={() => setErr(!err)} />}
+			{ready && (
+				<div className={stylesLoading.container}>
+					<BounceLoader
+						color={'#619002'}
+						loading={true}
+						className={stylesLoading.loading}
+						size={150}
+					/>
+					<p className={stylesLoading.p}>Cargando...</p>
+				</div>
+			)}
 			<form>
 				<h1 className={Styles.textTitle}>Modificar cuenta</h1>
 				<hr className={Styles.line} />
@@ -265,7 +283,9 @@ function loadPlaces(call) {
 		'https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json',
 	)
 		.then((r) => r.json())
-		.then((r) => {call(r)});
+		.then((r) => {
+			call(r);
+		});
 }
 
 function loadCities(c, d, places, call) {

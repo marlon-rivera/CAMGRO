@@ -42,7 +42,7 @@ function Header(props) {
 						/>
 					</li>
 					<li>
-						<SearchBar />
+						<SearchBar  />
 					</li>
 					<li>
 						{!props.isLogged ? (
@@ -62,7 +62,7 @@ function Header(props) {
 							/>
 						)}
 
-						{menu && <Menu />}
+						{menu && <Menu setMenu={setMenu} />}
 					</li>
 				</ul>
 			</nav>

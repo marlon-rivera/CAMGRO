@@ -34,7 +34,7 @@ function Button(props) {
 
 	if (!props.text && !props.sourceInv) {
 		return (
-			<button onClick={()=>props.func(props.path)} className={styles.buttonWithoutText}>
+			<button type={props.type} onClick={()=>props.func(props.path)} className={styles.buttonWithoutText}>
 				<img className={styles.img} src={props.source} />
 			</button>
 		);

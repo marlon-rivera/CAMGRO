@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Error from './Error';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { BounceLoader } from 'react-spinners';
+import stylesLoading from './../styles/Loading.module.css';
 
 function Register(props) {
 	const [places, setPlaces] = useState([]);
@@ -30,12 +32,10 @@ function Register(props) {
 	const [correctPass, setCorrectPass] = useState(true);
 	const [error, setError] = useState(false);
 	const [errMessage, setErrMessage] = useState();
+	const [ready, setReady] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if(!props.token){
-			navigate("/")
-		}
 		handleOnChangeDepartment();
 	}, [department, secondPassword, password, correctPass]);
 	const handleOnChangeDepartment = () => {
@@ -47,6 +47,7 @@ function Register(props) {
 	};
 
 	const handleSubmit = (e) => {
+		setReady(true);
 		e.preventDefault();
 		const data = {
 			name: `${name} ${lastname}`,
@@ -66,17 +67,18 @@ function Register(props) {
 			body: JSON.stringify(data),
 		})
 			.then((r) => {
+				setReady(false);
 				return r.json();
 			})
 			.then((r) => {
-				if(r.message){
+				setReady(false);
+				if (r.message) {
 					setErrMessage(r.message);
 					setError(true);
-				}else{
+				} else {
 					navigate('/login');
 				}
-			})
-			
+			});
 	};
 	loadPlaces(setPlaces);
 
@@ -105,7 +107,24 @@ function Register(props) {
 		setError(false);
 	};
 	return (
-		<div className={ error ? `${Styles.disabled} ${Styles.containerFormRegister}` : Styles.containerFormRegister}>
+		<div
+			className={
+				error || ready
+					? `${Styles.disabled} ${Styles.containerFormRegister}`
+					: Styles.containerFormRegister
+			}
+		>
+			{ready && (
+				<div className={stylesLoading.container}>
+					<BounceLoader
+						color={'#619002'}
+						loading={true}
+						className={stylesLoading.loading}
+						size={150}
+					/>
+					<p className={stylesLoading.p}>Cargando...</p>
+				</div>
+			)}
 			<form>
 				<h1 className={Styles.textTitle}>Registrarse</h1>
 				<hr className={Styles.line} />
@@ -305,13 +324,13 @@ async function loadPlaces(call) {
 }
 
 function mapStateToProps(state) {
-	return{
-		token: state.token
-	}
+	return {
+		token: state.token,
+	};
 }
 
 Register.propTypes = {
-	token: PropTypes.string
-}
+	token: PropTypes.string,
+};
 
 export default connect(mapStateToProps)(Register);

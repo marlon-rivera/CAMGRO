@@ -10,6 +10,7 @@ import stylesLoading from './../styles/Loading.module.css';
 
 function PostDetails(props) {
 	const { id } = useParams('id');
+	console.log("Details:" + id)
 
 	const [data, setData] = useState();
 	const [ready, setReady] = useState(false);

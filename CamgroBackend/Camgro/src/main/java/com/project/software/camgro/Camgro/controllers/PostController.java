@@ -127,4 +127,25 @@ public class PostController {
         }
         return ResponseEntity.ok(all);
     }
+
+    @GetMapping("search/{post}")
+    public ResponseEntity<?> searchPostsByWord(@PathVariable("post") String key){
+        List<Post> posts = postRepository.findAll();
+        List<ResponseAllPosts> result = new ArrayList<>();
+        String[] keys = key.split(" ");
+        for (Post post:
+             posts) {
+            for (String aux :
+                    keys) {
+                if(post.getPostTitle().toLowerCase().contains(aux.toLowerCase()) || post.getDescriptionPost().toLowerCase().contains(aux.toLowerCase())){
+                    List<Image> images = imageRepository.findAllByPost(post).get();
+                    result.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(), images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
+                }
+            }
+        }
+        if(result.isEmpty()){
+            return ResponseEntity.ok(new ErrorMesage("No se encontraron resultados"));
+        }
+        return ResponseEntity.ok(result);
+    }
 }
