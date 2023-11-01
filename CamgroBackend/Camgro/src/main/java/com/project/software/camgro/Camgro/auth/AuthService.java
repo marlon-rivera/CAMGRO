@@ -3,6 +3,7 @@ package com.project.software.camgro.Camgro.auth;
 import com.project.software.camgro.Camgro.domain.Account;
 import com.project.software.camgro.Camgro.domain.Person;
 import com.project.software.camgro.Camgro.domain.Place;
+import com.project.software.camgro.Camgro.domain.Role;
 import com.project.software.camgro.Camgro.errors.RepeatedAccountException;
 import com.project.software.camgro.Camgro.jwt.JwtService;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
@@ -46,7 +47,7 @@ public class AuthService {
         }
         Optional<Account> account = accountRepository.findAccountByEmail(loginRequest.getEmail());
         String token = jwtService.getToken(account.get());
-        return new AuthResponse(token);
+        return new AuthResponse(token, account.get().getRole());
     }
 
     @Transactional(rollbackFor = PSQLException.class)
@@ -67,10 +68,10 @@ public class AuthService {
             }
 
             Person person = new Person(personService.getNewId(), registerRequest.getName(), registerRequest.getPhone(), registerRequest.getAddress(), city);
-            Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()));
+            Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()), Role.USER);
             personRepository.save(person);
             accountRepository.save(account);
-            return new AuthResponse(jwtService.getToken(account));
+            return new AuthResponse(jwtService.getToken(account), account.getRole());
 
     }
 }

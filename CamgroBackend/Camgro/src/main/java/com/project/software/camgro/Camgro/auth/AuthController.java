@@ -50,14 +50,14 @@ public class AuthController {
         }catch(UsernameNotFoundException ex){
             return ResponseEntity.badRequest().body(new ErrorMesage(ex.getMessage()));
         }
-        return ResponseEntity.ok(new AuthResponse("ok"));
+        return ResponseEntity.ok(new AuthResponse("ok", null));
     }
 
     @PostMapping(value = "validate-code")
     public ResponseEntity<?> validateCode(@RequestBody RecoverPasswordRequest recoverPasswordRequest){
         if(recoverPasswordService.validateExpirationDate()) {
             if (recoverPasswordService.validateCode(recoverPasswordRequest.data()))
-                return ResponseEntity.ok(new AuthResponse("ok."));
+                return ResponseEntity.ok(new AuthResponse("ok.", null));
             return ResponseEntity.badRequest().body(new ErrorMesage("El codigo ingresado no es el generado."));
 
         }
@@ -68,6 +68,6 @@ public class AuthController {
     @PostMapping(value = "change-password")
     public ResponseEntity<?> changePassword(@RequestBody RecoverPasswordRequest recoverPasswordRequest){
         recoverPasswordService.changePassword(recoverPasswordRequest.data());
-        return ResponseEntity.ok(new AuthResponse("Contraseña cambiada correctamente."));
+        return ResponseEntity.ok(new AuthResponse("Contraseña cambiada correctamente.", null));
     }
 }

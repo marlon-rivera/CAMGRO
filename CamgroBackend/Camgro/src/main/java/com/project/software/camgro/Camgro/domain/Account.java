@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -29,10 +30,14 @@ public class Account implements UserDetails{
     private String email;
     @Column(name = "contrasena_cuenta")
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_user")
+    private Role role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<GrantedAuthority>();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
