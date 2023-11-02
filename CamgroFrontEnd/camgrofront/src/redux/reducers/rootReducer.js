@@ -1,10 +1,11 @@
-import { LOGIN, UPDATE_PERSON, UPDATE_TOKEN, UPDATE_EMAIL } from "../actions/actionsCreators";
+import { LOGIN, UPDATE_PERSON, UPDATE_TOKEN, UPDATE_EMAIL, UPDATE_ROLE } from "../actions/actionsCreators";
 
 const initialState = {
     token : null,
     login : false,
     person: null,
-    email: null
+    email: null,
+    role: null
 }
 
 function rootReducer (state = initialState, action){
@@ -15,7 +16,6 @@ function rootReducer (state = initialState, action){
                 token : action.payload
             }
         case LOGIN:
-            console.log("Entre: " + action.payload)
             return{
                 ...state,
                 login : action.payload
@@ -26,10 +26,14 @@ function rootReducer (state = initialState, action){
                 person: action.payload
             }
         case UPDATE_EMAIL:
-            console.log("UPDATE EMAIL")
             return{
                 ...state,
                 email: action.payload
+            }
+        case UPDATE_ROLE:
+            return{
+                ...state,
+                role: action.payload
             }
         default:
             return state;

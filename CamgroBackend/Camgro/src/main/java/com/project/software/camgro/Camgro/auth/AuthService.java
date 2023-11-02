@@ -68,7 +68,7 @@ public class AuthService {
             }
 
             Person person = new Person(personService.getNewId(), registerRequest.getName(), registerRequest.getPhone(), registerRequest.getAddress(), city);
-            Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()), Role.USER);
+            Account account = new Account(accountService.getNewID(), person, registerRequest.getEmail(), encoder.encode(registerRequest.getPassword()), Role.USER, true);
             personRepository.save(person);
             accountRepository.save(account);
             return new AuthResponse(jwtService.getToken(account), account.getRole());

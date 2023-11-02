@@ -45,6 +45,7 @@ public class AuthController {
 
     @PostMapping(value = "generate-code")
     public ResponseEntity<?> recoverPassword(@RequestBody RecoverPasswordRequest recoverPasswordRequest) {
+        System.out.println(recoverPasswordRequest.data());
         try{
             emailService.sendEmailRecoverPassword(recoverPasswordRequest.data(), recoverPasswordService.generateCode(recoverPasswordRequest.data()));
         }catch(UsernameNotFoundException ex){
@@ -67,6 +68,7 @@ public class AuthController {
 
     @PostMapping(value = "change-password")
     public ResponseEntity<?> changePassword(@RequestBody RecoverPasswordRequest recoverPasswordRequest){
+        System.out.println(recoverPasswordRequest.data());
         recoverPasswordService.changePassword(recoverPasswordRequest.data());
         return ResponseEntity.ok(new AuthResponse("Contraseña cambiada correctamente.", null));
     }

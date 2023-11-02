@@ -1,5 +1,6 @@
 package com.project.software.camgro.Camgro.security;
 
+import com.project.software.camgro.Camgro.domain.Role;
 import com.project.software.camgro.Camgro.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ public class SecurityConf {
                       authRequest
                               .requestMatchers("/auth/**").permitAll()
                               .requestMatchers("/post/all").permitAll()
+                              .requestMatchers("/admin/*").hasRole(Role.ADMIN.name())
                               .anyRequest().authenticated()
                         )
               .sessionManagement(sessionManager ->

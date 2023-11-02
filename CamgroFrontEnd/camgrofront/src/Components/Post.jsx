@@ -3,8 +3,7 @@ import styles from './../styles/Post.module.css';
 import PropTypes from 'prop-types';
 
 function Post(props) {
-	console.log("POST:" + props.i)
-
+	
 	return (
 		<Link to={`/post/${props.i}`}>
 			<article className={styles.post}>

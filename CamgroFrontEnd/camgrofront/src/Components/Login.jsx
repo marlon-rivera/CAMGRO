@@ -11,6 +11,7 @@ import {
 	login,
 	updateInfoPerson,
 	updateEmail,
+	updateRole
 } from '../redux/actions/actionsCreators';
 import PropTypes from 'prop-types';
 import { BounceLoader } from 'react-spinners';
@@ -45,6 +46,7 @@ function Login(props) {
 				setReady(false);
 				navigate('/');
 				props.updateToken(json.token);
+				props.updateRole(json.role)
 				props.login(true);
 				data = {
 					email,
@@ -151,6 +153,7 @@ Login.propTypes = {
 	login: PropTypes.func,
 	updateInfoPerson: PropTypes.func,
 	updateEmail: PropTypes.func,
+	updateRole: PropTypes.func
 };
 
 function mapDispatchToProps(dispatch) {
@@ -159,6 +162,7 @@ function mapDispatchToProps(dispatch) {
 		login: (loginBool) => dispatch(login(loginBool)),
 		updateInfoPerson: (person) => dispatch(updateInfoPerson(person)),
 		updateEmail: (email) => dispatch(updateEmail(email)),
+		updateRole: (role) => dispatch(updateRole(role))
 	};
 }
 

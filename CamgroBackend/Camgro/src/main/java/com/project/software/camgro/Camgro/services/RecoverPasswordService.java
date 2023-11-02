@@ -48,6 +48,7 @@ public class RecoverPasswordService {
     }
 
     public void changePassword(String password){
+        System.out.println(encoder.encode(password));
         Account accountAux = account.get();
         accountAux.setPassword(encoder.encode(password));
         accountRepository.save(accountAux);

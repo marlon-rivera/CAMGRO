@@ -33,6 +33,8 @@ public class Account implements UserDetails{
     @Enumerated(EnumType.STRING)
     @Column(name = "role_user")
     private Role role;
+    @Column(name = "activa")
+    private boolean active;
 
 
     @Override
