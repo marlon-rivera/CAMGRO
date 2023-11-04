@@ -52,8 +52,8 @@ function Carrousel(props) {
 			<div className={styles.arrowL}>
 
 				<Button
-					source={images.arrowL}
-					sourceInv={images.arrowLInv}
+					source={images.arrowLInv}
+					sourceInv={images.arrowL}
 					func={previousPost}
 				/>
 			</div>
@@ -62,8 +62,8 @@ function Carrousel(props) {
 			})}
 			<div className={styles.arrowR}>
 				<Button
-					source={images.arrowR}
-					sourceInv={images.arrowRInv}
+					source={images.arrowRInv}
+					sourceInv={images.arrowR}
 					func={nextPost}
 				/>
 			</div>

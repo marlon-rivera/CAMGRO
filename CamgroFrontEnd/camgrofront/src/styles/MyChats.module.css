@@ -1,0 +1,91 @@
+.container {
+	position: absolute;
+	top: 50%;
+	left: 30%;
+	transform: translate(-50%, -50%);
+	width: 45%;
+	height: 75vh;
+	margin-top: 5vh;
+	display: flex;
+	flex-direction: column;
+}
+.textTitle {
+	font-size: 2.5vw;
+	font-family: 'Century Gothic';
+	margin: 10px;
+	padding-top: 10px;
+	color: white;
+}
+.chatComponent {
+	position: absolute;
+	top: 5%;
+	left: 1100px;
+}
+.containerChats {
+	margin: auto;
+	margin-top: 40px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50vh;
+	background-color: rgb(255, 255, 255, 0.2);
+	border-radius: 5%/10%;
+}
+.chats {
+	height: 40vh;
+	overflow: auto;
+	display: flex;
+	width: 85%;
+	flex-direction: column;
+	padding: 30px;
+}
+.chats::-webkit-scrollbar {
+	width: 15px;
+}
+
+.chats::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 10px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+	background: rgb(var(--color-verde-boton));
+	border-radius: 10px;
+	padding: 2px;
+	border: 3px solid transparent;
+	background-clip: content-box;
+}
+.line {
+	margin-right: 10px;
+	margin-left: 10px;
+	border: none;
+	border-top: 1.5px solid white;
+}
+.chat {
+	display: flex;
+    cursor: pointer;
+}
+.chat:hover{
+    transform: scale(1.1);
+}
+.h3 {
+	font-size: 20px;
+	display: inline;
+	color: white;
+	margin: 15px;
+}
+.span {
+	margin: 15px;
+	font-size: 15px;
+	color: white;
+}
+.img {
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border-radius: 50%;
+}

@@ -37,7 +37,7 @@ function Results(props) {
 				setResults(r);
 				setReady(true);
 			});
-	}, []);
+	}, [searched]);
 
 	return (
 		<>

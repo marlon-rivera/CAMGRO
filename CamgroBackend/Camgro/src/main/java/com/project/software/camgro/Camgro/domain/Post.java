@@ -18,9 +18,6 @@ public class Post {
     @Column(name="id_publicacion")
     private String idPost;
     @ManyToOne
-    @JoinColumn(name="id_cuenta")
-    private Account account;
-    @ManyToOne
     @JoinColumn(name="id_lugares")
     private Place place;
     @Column(name="precio_productos")
@@ -39,4 +36,6 @@ public class Post {
     private String measureUnit;
     @Column(name="estado_publicacion")
     private String postStatus;
+    @Column(name ="activa")
+    private boolean active;
 }

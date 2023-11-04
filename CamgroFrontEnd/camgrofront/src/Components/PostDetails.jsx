@@ -7,13 +7,17 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BounceLoader } from 'react-spinners';
 import stylesLoading from './../styles/Loading.module.css';
+import Error from './Error';
+import Chat from './Chat';
 
 function PostDetails(props) {
 	const { id } = useParams('id');
-	console.log("Details:" + id)
 
 	const [data, setData] = useState();
-	const [ready, setReady] = useState(false);
+	const [ready, setReady] = useState(true);
+	const [error, setError] = useState(false);
+	const [errMess, setErrMess] = useState('');
+	const [chat, setChat] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -43,12 +47,59 @@ function PostDetails(props) {
 		};
 
 		fetchData();
-
-		console.log(data);
 	}, []);
+
+	const savePost = (id) => {
+		const data = {
+			idPost: id,
+			email: props.email,
+		};
+		console.log(props.token);
+		fetch('http://localhost:8080/post/save', {
+			method: 'POST',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + props.token,
+			},
+			body: JSON.stringify(data),
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				setErrMess(r.message);
+				setError(true);
+			})
+			.catch((err) => {
+				setErrMess(err.message);
+				setError(true);
+			});
+	};
+
+	const getOwnerPost = async () => {
+		const owner = await fetch('http://localhost:8080/post/getOwner/' + id,{
+			method: 'GET',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + props.token,
+			}
+		})
+		.then(r => r.json())
+		.then(r=>{return r.message})
+
+		return owner;
+	}
 
 	return (
 		<div className={styles.container}>
+			{error && <Error message={errMess} func={() => setError(false)} />}
+			{chat && <Chat func={getOwnerPost} />}
 			{!ready ? (
 				<div className={stylesLoading.container}>
 					<BounceLoader
@@ -70,7 +121,12 @@ function PostDetails(props) {
 						</div>
 						<div className={styles.save}>
 							<span className={styles.savePost}>Guardar publicacion:</span>
-							<Button source={images.save} sourceInv={images.saveInv} />
+							<Button
+								func={savePost}
+								path={id}
+								source={images.saveInv}
+								sourceInv={images.save}
+							/>
 						</div>
 					</div>
 					<div className={styles.containerInfo}>
@@ -109,7 +165,7 @@ function PostDetails(props) {
 						</div>
 						<div className={styles.chat}>
 							<span className={styles.chatMessage}>Chat con el vendedor:</span>
-							<Button source={images.chat} sourceInv={images.chatInv} />
+							<Button source={images.chatInv} sourceInv={images.chat} func={() => setChat(!chat)} />
 						</div>
 					</div>
 				</>
@@ -121,11 +177,13 @@ function PostDetails(props) {
 function mapStateToProps(state) {
 	return {
 		token: state.token,
+		email: state.email,
 	};
 }
 
 PostDetails.propTypes = {
 	token: PropTypes.string,
+	email: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(PostDetails);

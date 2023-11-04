@@ -142,8 +142,8 @@ function RestorePassword(props) {
 						<Button
 							func={navigate}
 							path={'/login'}
-							source={images.x}
-							sourceInv={images.xInv}
+							source={images.xInv}
+							sourceInv={images.x}
 							type={'button'}
 						/>
 					</div>

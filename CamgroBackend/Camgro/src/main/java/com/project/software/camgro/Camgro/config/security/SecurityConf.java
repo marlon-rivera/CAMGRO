@@ -1,4 +1,4 @@
-package com.project.software.camgro.Camgro.security;
+package com.project.software.camgro.Camgro.config.security;
 
 import com.project.software.camgro.Camgro.domain.Role;
 import com.project.software.camgro.Camgro.jwt.JwtAuthenticationFilter;
@@ -31,7 +31,7 @@ public class SecurityConf {
                       authRequest
                               .requestMatchers("/auth/**").permitAll()
                               .requestMatchers("/post/all").permitAll()
-                              .requestMatchers("/admin/*").hasRole(Role.ADMIN.name())
+                              .requestMatchers("/chat/*").permitAll()
                               .anyRequest().authenticated()
                         )
               .sessionManagement(sessionManager ->

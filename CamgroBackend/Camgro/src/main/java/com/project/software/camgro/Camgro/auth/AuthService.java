@@ -1,9 +1,6 @@
 package com.project.software.camgro.Camgro.auth;
 
-import com.project.software.camgro.Camgro.domain.Account;
-import com.project.software.camgro.Camgro.domain.Person;
-import com.project.software.camgro.Camgro.domain.Place;
-import com.project.software.camgro.Camgro.domain.Role;
+import com.project.software.camgro.Camgro.domain.*;
 import com.project.software.camgro.Camgro.errors.RepeatedAccountException;
 import com.project.software.camgro.Camgro.jwt.JwtService;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
@@ -14,6 +11,7 @@ import com.project.software.camgro.Camgro.services.PersonService;
 import com.project.software.camgro.Camgro.services.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.postgresql.util.PSQLException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -39,15 +37,18 @@ public class AuthService {
     private final PlaceService placeService;
     private final PersonService personService;
 
-    public AuthResponse login(LoginRequest loginRequest) throws UsernameNotFoundException {
+    public ResponseEntity<?> login(LoginRequest loginRequest) throws UsernameNotFoundException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         }catch (AuthenticationException e){
             throw new UsernameNotFoundException(e.getMessage());
         }
         Optional<Account> account = accountRepository.findAccountByEmail(loginRequest.getEmail());
-        String token = jwtService.getToken(account.get());
-        return new AuthResponse(token, account.get().getRole());
+        if(account.get().isActive()){
+            String token = jwtService.getToken(account.get());
+            return ResponseEntity.ok(new AuthResponse(token, account.get().getRole()));
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("La cuenta se encuentra desactivada."));
     }
 
     @Transactional(rollbackFor = PSQLException.class)

@@ -24,6 +24,7 @@ public class Message {
     private String contentMessage;
     @Column(name = "fecha_mensaje")
     private LocalDateTime date;
-    @Column(name = "id_cuenta")
-    private String id_account;
+    @ManyToOne
+    @JoinColumn(name = "id_cuenta")
+    private Account account;
 }

@@ -10,6 +10,4 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, String> {
 
     Optional<Post> findTopByOrderByIdPostDesc();
-
-    Optional<List<Post>> findAllByAccount(Account account);
 }

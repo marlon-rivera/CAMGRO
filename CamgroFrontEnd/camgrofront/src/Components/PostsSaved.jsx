@@ -6,24 +6,19 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 import { BounceLoader } from 'react-spinners';
 import stylesLoading from './../styles/Loading.module.css';
-import Error from './Error'
 
-function MyPosts(props) {
+function PostsSaved(props) {
 	const navigate = useNavigate();
 	const [posts, setPosts] = useState([]);
 	const [ready, setReady] = useState(false);
-	const [error, setError] = useState(false)
-	const [errMess, setErrMess] = useState('')
 
 	useEffect(() => {
 		if (!props.token) {
 			navigate('/login');
 		}
-	
-		let url = `http://localhost:8080/post/all`;
-		if(props.role === 'USER'){
-			url += `/${props.email}`;
-		}
+
+		const url = `http://localhost:8080/post/savedPosts/${props.email}`;
+        console.log(url)
 		fetch(url, {
 			method: 'GET',
 			headers: {
@@ -37,6 +32,7 @@ function MyPosts(props) {
 		})
 			.then((response) => response.json())
 			.then((json) => {
+                console.log(json)
 				setPosts(json);
 				setReady(true);
 			})
@@ -47,34 +43,8 @@ function MyPosts(props) {
 		navigate('/post/' + index);
 	};
 
-	const deletePost = (idPost, index) => {
-		const url = 'http://localhost:8080/admin/delete-post/' + idPost
-		fetch(url, {
-			method: 'DELETE',
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': '*',
-				'Access-Control-Allow-Headers': '*',
-				'Access-Control-Allow-Credentials': 'true',
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${props.token}`,
-				'Role' : props.role
-			},
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				setError(true)
-				setErrMess(json.message)
-				setReady(true);
-				posts.splice(index, 1)
-				setPosts(posts)
-			})
-			.catch((err) => console.log(err));
-	}
-
 	return (
 		<div className={styles.container}>
-			{error && <Error message={errMess} func={()=>setError(false)} /> }
 			{!ready ? (
 				<div className={stylesLoading.container}>
 					<BounceLoader
@@ -87,7 +57,7 @@ function MyPosts(props) {
 				</div>
 			) : (
 				<>
-					<h1 className={styles.textTitle}> {props.role === 'ADMIN' ? 'Publicaciones' : 'Mis publicaciones'}</h1>
+					<h1 className={styles.textTitle}>Publicaciones guardadas</h1>
 					<div className={styles.posts}>
 						{posts.map((p, index) => {
 							return (
@@ -128,13 +98,9 @@ function MyPosts(props) {
 										</div>
 										<div className={styles.modify}>
 											<Button
-												text={props.role === 'ADMIN' ? 'Eliminar' : 'Modificar'}
+												text={'Ir a publicación'}
 												func={() => {
-													if(props.role === 'ADMIN'){
-														deletePost(p.idPost, index)
-													}else{
-														navigate(`/modify-post/${p.idPost}`);
-													}
+													navigatePostDetails(p.ickdPost);
 												}}
 											/>
 										</div>
@@ -153,14 +119,12 @@ function mapStateToprops(state) {
 	return {
 		token: state.token,
 		email: state.email,
-		role: state.role
 	};
 }
 
-MyPosts.propTypes = {
+PostsSaved.propTypes = {
 	token: PropTypes.string,
 	email: PropTypes.string,
-	role: PropTypes.string
 };
 
-export default connect(mapStateToprops)(MyPosts);
+export default connect(mapStateToprops)(PostsSaved);

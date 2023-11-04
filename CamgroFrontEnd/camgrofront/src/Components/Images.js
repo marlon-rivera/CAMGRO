@@ -32,6 +32,8 @@ import arrowR from './../Static/arrowR.png'
 import arrowRInv from './../Static/arrowRINV.png'
 import arrowL from './../Static/arrowL.png'
 import arrowLInv from './../Static/arrowLINV.png'
+import backChat from './../Static/backChat.png'
+import send from './../Static/send.png'
 
 export const images = {
 	house,
@@ -67,5 +69,7 @@ export const images = {
 	arrowR,
 	arrowRInv,
 	arrowL,
-	arrowLInv
+	arrowLInv,
+	backChat,
+	send
 };

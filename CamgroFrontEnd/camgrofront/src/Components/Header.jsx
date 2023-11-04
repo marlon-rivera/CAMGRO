@@ -6,14 +6,14 @@ import SearchBar from './SearchBar';
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 function Header(props) {
 	const [menu, setMenu] = useState(false);
 
-	useEffect(()=>{
-		setMenu(false)
-	}, [])
+	useEffect(() => {
+		setMenu(false);
+	}, []);
 
 	const navigate = useNavigate();
 	return (
@@ -42,8 +42,18 @@ function Header(props) {
 						/>
 					</li>
 					<li>
-						<SearchBar  />
+						<SearchBar />
 					</li>
+					{props.isLogged && (
+						<li>
+							<Button
+								source={images.saveInv}
+								sourceInv={images.save}
+								func={navigate}
+								path={'/posts-saved'}
+							/>
+						</li>
+					)}
 					<li>
 						{!props.isLogged ? (
 							<Button
@@ -58,7 +68,9 @@ function Header(props) {
 								source={images.user}
 								sourceInv={images.userInv}
 								text='Mi cuenta'
-								func={()=>{setMenu(!menu)}}
+								func={() => {
+									setMenu(!menu);
+								}}
 							/>
 						)}
 
@@ -70,14 +82,14 @@ function Header(props) {
 	);
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
 	return {
-		isLogged : state.login
-	}
+		isLogged: state.login,
+	};
 }
 
-Header.propTypes={
-	isLogged : PropTypes.bool
-}
+Header.propTypes = {
+	isLogged: PropTypes.bool,
+};
 
 export default connect(mapStateToProps, null)(Header);

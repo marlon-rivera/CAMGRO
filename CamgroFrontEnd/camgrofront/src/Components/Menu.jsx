@@ -20,7 +20,7 @@ function Menu(props) {
 	}
 	console.log(props.role)
 	return (
-		<div className={styles.containerMenu}>
+		<div className={ props.role === 'ADMIN' ? styles.menuAdmin : styles.containerMenu}>
 			{props.role === 'ADMIN' ? (
 				<ul className={styles.options}>
 				<li>
@@ -83,7 +83,7 @@ function Menu(props) {
 						</Link>
 					</li>
 					<li>
-						<Link className={styles.option}>
+						<Link to={'/my-chats'} className={styles.option}>
 							<img
 								src={images.messages}
 								alt='icon messages'

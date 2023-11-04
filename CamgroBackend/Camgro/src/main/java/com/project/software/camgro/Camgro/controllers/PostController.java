@@ -2,10 +2,8 @@ package com.project.software.camgro.Camgro.controllers;
 
 import com.project.software.camgro.Camgro.domain.*;
 import com.project.software.camgro.Camgro.records.ResponseAllPosts;
-import com.project.software.camgro.Camgro.repositories.AccountRepository;
-import com.project.software.camgro.Camgro.repositories.ImageRepository;
-import com.project.software.camgro.Camgro.repositories.PersonRepository;
-import com.project.software.camgro.Camgro.repositories.PostRepository;
+import com.project.software.camgro.Camgro.records.SavePostRequest;
+import com.project.software.camgro.Camgro.repositories.*;
 import com.project.software.camgro.Camgro.services.ImageService;
 import com.project.software.camgro.Camgro.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +27,7 @@ public class PostController {
     private final ImageService imageService;
     private final PersonRepository personRepository;
     private final PostRepository postRepository;
+    private final PostAccountsRepository postAccountsRepository;
 
     @PostMapping(value = "add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addPost(@RequestPart("name") String name, @RequestPart("description") String description, @RequestPart("price") String price, @RequestPart("unit") String unit, @RequestPart("postDate") String postDate, @RequestPart("harvestDate") String harvestDate, @RequestPart("quantity") String quantity, @RequestPart("postState") String postState, @RequestPart("image") MultipartFile image, @RequestPart("id_person") String id_person){
@@ -39,10 +38,11 @@ public class PostController {
         Optional<Person> person = personRepository.findById(id_person);
         Optional<Account> account = accountRepository.findByPerson(person.get());
         try {
-            Post post = new Post(postService.getNewId(), account.get(), account.get().getPerson().getPlace(), priceDouble, quantityInt, name, description, postDateDate, harvestDateDate, unit, postState);
+            Post post = new Post(postService.getNewId(), account.get().getPerson().getPlace(), priceDouble, quantityInt, name, description, postDateDate, harvestDateDate, unit, postState, true);
             Image imageSend = new Image(imageService.getNewId(), post, image.getBytes(), image.getName(), postDateDate);
             postRepository.save(post);
             imageRepository.save(imageSend);
+            postAccountsRepository.save(new PostAccounts(new PostsAccountsPrimaryKey(account.get(),post), true));
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(new ErrorMesage("No se pudo subir la publicacion"));
         }
@@ -53,13 +53,15 @@ public class PostController {
     @GetMapping(value = "all/{email}")
     public ResponseEntity<?> getAllPosts(@PathVariable("email") String email){
         Account account = accountRepository.findAccountByEmail(email).get();
-        Optional<List<Post>> posts = postRepository.findAllByAccount(account);
         List<ResponseAllPosts> allPosts = new ArrayList<>();
-        for (Post post:
-             posts.get()) {
-            List<Image> images = imageRepository.findAllByPost(post).get();
-
-            allPosts.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(),images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
+        List<PostAccounts> postsAccounts = postAccountsRepository.findAllByPostsAccountsPrimaryKeyAccountAndOwnTrue(account);
+        for (PostAccounts postAccounts:
+             postsAccounts) {
+            Post post = postAccounts.getPostsAccountsPrimaryKey().getPost();
+            if(post.isActive()){
+                List<Image> images = imageRepository.findAllByPost(post).get();
+                allPosts.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(),images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
+            }
         }
         return ResponseEntity.ok(allPosts);
     }
@@ -121,14 +123,15 @@ public class PostController {
         List<ResponseAllPosts> all = new ArrayList<>();
         for (Post post :
                 posts) {
-            List<Image> images = imageRepository.findAllByPost(post).get();
-            all.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(), images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
-
+            if(post.isActive()){
+                List<Image> images = imageRepository.findAllByPost(post).get();
+                all.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(), images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
+            }
         }
         return ResponseEntity.ok(all);
     }
 
-    @GetMapping("search/{post}")
+    @GetMapping(value = "search/{post}")
     public ResponseEntity<?> searchPostsByWord(@PathVariable("post") String key){
         List<Post> posts = postRepository.findAll();
         List<ResponseAllPosts> result = new ArrayList<>();
@@ -147,5 +150,53 @@ public class PostController {
             return ResponseEntity.ok(new ErrorMesage("No se encontraron resultados"));
         }
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping(value = "save")
+    public ResponseEntity<?> savePost(@RequestBody SavePostRequest savePostRequest){
+        System.out.println("Funcione");
+        Optional<Post> post = postRepository.findById("PO" + savePostRequest.idPost());
+        Optional<Account> account = accountRepository.findAccountByEmail(savePostRequest.email());
+        if(post.isPresent()){
+            if(account.isPresent()){
+                PostAccounts postAccounts = new PostAccounts(new PostsAccountsPrimaryKey(account.get(), post.get()), false);
+                postAccountsRepository.save(postAccounts);
+                return ResponseEntity.ok(new ErrorMesage("Publicacion guardada correctamente."));
+            }
+            return ResponseEntity.badRequest().body(new ErrorMesage("La cuenta no existe."));
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("La publicación no existe."));
+    }
+
+    @GetMapping(value = "savedPosts/{email}")
+    public ResponseEntity<?> getSavedPostsByEmail(@PathVariable("email") String email){
+        System.out.println(email);
+        Optional<Account> account =accountRepository.findAccountByEmail(email);
+        List<ResponseAllPosts> result = new ArrayList<>();
+        if(account.isPresent()){
+            List<PostAccounts> savedPosts = postAccountsRepository.findAllByPostsAccountsPrimaryKeyAccountAndOwnFalse(account.get());
+            for (PostAccounts postAccounts :
+                    savedPosts) {
+                Post post = postAccounts.getPostsAccountsPrimaryKey().getPost();
+                List<Image> images = imageRepository.findAllByPost(post).get();
+                result.add(new ResponseAllPosts(post.getIdPost().substring(2), post.getAmountProducts(), post.getDescriptionPost(), post.getPostStatus(), post.getPostTitle(), post.getPriceProduct(), post.getHarvestDate(), post.getPublicationDate(), images.get(0).getUrl(), post.getMeasureUnit(), post.getPlace()));
+            }
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("La cuenta no existe."));
+    }
+
+    @GetMapping(value = "getOwner/{idPost}")
+    public ResponseEntity<?> getOwnerByIdPost(@PathVariable("idPost") String idPost){
+        Optional<Post> postOp = postRepository.findById("PO" + idPost);
+        if(postOp.isPresent()){
+            Optional<PostAccounts> postAccountsOp = postAccountsRepository.findByPostsAccountsPrimaryKeyPostAndOwnTrue(postOp.get());
+            if(postAccountsOp.isPresent()){
+
+                return ResponseEntity.ok(new ErrorMesage(postAccountsOp.get().getPostsAccountsPrimaryKey().getAccount().getEmail()));
+            }
+            return ResponseEntity.badRequest().body(new ErrorMesage("No se ha encontrado el dueño."));
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("No se encontró el post."));
     }
 }

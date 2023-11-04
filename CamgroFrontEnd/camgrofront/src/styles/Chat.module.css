@@ -1,0 +1,147 @@
+@import url('./variables.css');
+.container {
+	z-index: 3;
+	position: absolute;
+	top: 17%;
+	right: 13%;
+	background-color: rgba(255, 255, 255, 0.2);
+	width: 330px;
+	height: 520px;
+	border-radius: 10%/5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.chatContainer {
+	width: 90%;
+	height: 490px;
+}
+.chat {
+	height: 380px;
+	background-color: white;
+	border: 4px solid rgba(var(--color-verde-boton));
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+}
+.chat::-webkit-scrollbar {
+    width: 15px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-verde-boton)); 
+    border-radius: 10px;
+    padding: 2px;
+    border: 3px solid transparent;
+    background-clip: content-box; 
+}
+
+.header {
+	border-top-right-radius: 30px;
+	border-top-left-radius: 30px;
+	width: 100%;
+	height: 50px;
+	display: flex;
+	align-items: center;
+
+	background-color: rgba(var(--color-verde-boton));
+}
+.footer {
+	width: 100%;
+	height: 60px;
+	border-bottom-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+	background-color: rgba(var(--color-verde-boton));
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.imgUser {
+	background-color: white;
+	border-radius: 50%;
+	margin: 5px;
+}
+.user {
+	color: white;
+	font-family: 'Century Gothic';
+	margin: 5px;
+}
+.back {
+	margin: 6px;
+	width: 25px;
+	height: 25px;
+	margin-left: 15px;
+}
+.input {
+	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 210px;
+	border-radius: 5%/20%;
+	margin-top: -10px;
+	margin-left: -40px;
+}
+.inputMess {
+	width: 160px;
+	height: 30px;
+	border: none;
+}
+.send {
+	margin-top: 5px;
+	width: 30px;
+	height: 30px;
+}
+.message {
+	background-color: rgba(var(--color-verde-boton));
+	width: 220px;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 5%/15%;
+}
+.message > p{
+	color: white;
+	font-family: 'Century Gothic';
+	font-size: 15px;
+}
+.messageOther > p{
+	font-size: 15px;
+	font-family: 'Century Gothic';
+	color:  rgb(var(--color-verde-boton));
+}
+.triangleMessage {
+	position: relative;
+	top: 10px;
+	right: -205px;
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid rgb(var(--color-verde-boton));
+}
+
+.triangleMessageOther {
+	position: relative;
+	top: 10px;
+	right: 25px;
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-bottom: 20px solid rgb(223,233,204);
+}
+
+.messageOther {
+	background-color: rgb(223,233,204);
+	width: 220px;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 5%/15%;
+	
+}

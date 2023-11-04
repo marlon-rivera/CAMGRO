@@ -1,4 +1,4 @@
-package com.project.software.camgro.Camgro.security;
+package com.project.software.camgro.Camgro.config.security;
 
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;

@@ -6,6 +6,8 @@ import com.project.software.camgro.Camgro.services.AccountService;
 import com.project.software.camgro.Camgro.services.EmailService;
 import com.project.software.camgro.Camgro.services.RecoverPasswordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +27,13 @@ public class AuthController {
 
     @PostMapping(value ="login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-        AuthResponse response = null;
+        ResponseEntity<?> response = null;
         try {
             response = authService.login(loginRequest);
         }catch (UsernameNotFoundException e){
             return ResponseEntity.status(403).body(e.getMessage());
         }
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     @PostMapping(value = "register")

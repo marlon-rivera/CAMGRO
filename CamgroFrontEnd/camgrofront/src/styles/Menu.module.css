@@ -12,6 +12,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
+}
+.menuAdmin{
+    position: absolute;
+    top: 29%;
+    right: -10%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 25%;
+    height: 30%;
+    border: 2px solid rgb(var(--color-verde-boton));
+    border-radius: 10%/15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
 }
 .options{
     display: flex;
