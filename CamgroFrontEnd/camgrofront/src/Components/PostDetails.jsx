@@ -5,8 +5,7 @@ import { images } from './Images';
 import Button from './Button';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 import Error from './Error';
 import Chat from './Chat';
 
@@ -14,10 +13,12 @@ function PostDetails(props) {
 	const { id } = useParams('id');
 
 	const [data, setData] = useState();
-	const [ready, setReady] = useState(true);
+	const [ready, setReady] = useState(false);
 	const [error, setError] = useState(false);
 	const [errMess, setErrMess] = useState('');
 	const [chat, setChat] = useState(false);
+	const [ownerPost, setOwnerPost] = useState();
+	const [name, setName] = useState();
 
 	const navigate = useNavigate();
 
@@ -79,7 +80,7 @@ function PostDetails(props) {
 	};
 
 	const getOwnerPost = async () => {
-		const owner = await fetch('http://localhost:8080/post/getOwner/' + id,{
+		await fetch('http://localhost:8080/post/getOwner/' + id, {
 			method: 'GET',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -88,28 +89,23 @@ function PostDetails(props) {
 				'Access-Control-Allow-Credentials': 'true',
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + props.token,
-			}
+			},
 		})
-		.then(r => r.json())
-		.then(r=>{return r.message})
+			.then((r) => r.json())
+			.then((r) => {
+				setOwnerPost(r.email);
+				setName(r.name)
+			});
+	};
 
-		return owner;
-	}
+	getOwnerPost();
 
 	return (
 		<div className={styles.container}>
 			{error && <Error message={errMess} func={() => setError(false)} />}
-			{chat && <Chat func={getOwnerPost} />}
+			{chat && <Chat emailPost={ownerPost} nameOwnerPost={name} setChat={() => setChat(!chat)} />}
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				< Loading />
 			) : (
 				<>
 					<div className={styles.containerImage}>
@@ -165,7 +161,11 @@ function PostDetails(props) {
 						</div>
 						<div className={styles.chat}>
 							<span className={styles.chatMessage}>Chat con el vendedor:</span>
-							<Button source={images.chatInv} sourceInv={images.chat} func={() => setChat(!chat)} />
+							<Button
+								source={images.chatInv}
+								sourceInv={images.chat}
+								func={() => setChat(!chat)}
+							/>
 						</div>
 					</div>
 				</>

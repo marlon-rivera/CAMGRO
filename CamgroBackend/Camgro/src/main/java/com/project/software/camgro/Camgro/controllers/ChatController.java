@@ -4,6 +4,7 @@ import com.project.software.camgro.Camgro.domain.Account;
 import com.project.software.camgro.Camgro.domain.Chat;
 import com.project.software.camgro.Camgro.domain.ErrorMesage;
 import com.project.software.camgro.Camgro.domain.Message;
+import com.project.software.camgro.Camgro.records.ChatsResponse;
 import com.project.software.camgro.Camgro.records.MessageRequest;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
 import com.project.software.camgro.Camgro.repositories.ChatRepository;
@@ -24,30 +25,48 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/chat")
 @RequiredArgsConstructor
+@RequestMapping("/chat")
 public class ChatController {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
     private final AccountRepository accountRepository;
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
-
-    @MessageMapping("/chat/{to}")
-    public void sendMessage(@DestinationVariable String to, MessageRequest message){
-        System.out.println("Handling send message: " + message.content() + "to: " + to);
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
-    }
 
     @GetMapping(value = "all/{email}")
     public ResponseEntity<?> getAllChatsByAccount(@PathVariable("email") String email){
         Optional<Account> accountOp = accountRepository.findAccountByEmail(email);
         if(accountOp.isPresent()){
             List<Chat> chats = chatRepository.findAllByAccountBuyerOrAccountSeller(accountOp.get(), accountOp.get());
-
-            return ResponseEntity.ok(chats);
+            List<ChatsResponse> result = new ArrayList<>();
+            for (Chat chat :
+                    chats) {
+                Optional<Message> messageOp = chatRepository.findLastMessageByChat(chat);
+                if(messageOp.isPresent()){
+                    if(chat.getAccountBuyer().getEmail().equalsIgnoreCase(email)){
+                        result.add(new ChatsResponse(chat.getAccountSeller().getPerson().getName(), messageOp.get().getContentMessage(), chat.getAccountSeller().getEmail()));
+                    }else{
+                        result.add(new ChatsResponse(chat.getAccountBuyer().getPerson().getName(), messageOp.get().getContentMessage(), chat.getAccountBuyer().getEmail()));
+                    }
+                }
+            }
+            return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().body(new ErrorMesage("La cuenta no existe."));
+    }
+
+    @GetMapping("/{email1}/{email2}")
+    public ResponseEntity<?> getChatBy2Accounts(@PathVariable("email1") String email1, @PathVariable("email2") String email2){
+        Optional<Account> oneOp = accountRepository.findAccountByEmail(email1);
+        Optional<Account> twoOp = accountRepository.findAccountByEmail(email2);
+        if(oneOp.isPresent() && twoOp.isPresent()){
+            System.out.println(oneOp.get());
+            System.out.println(twoOp.get());
+            Optional<Chat> chatOp = chatRepository.findChatByAccountBuyerAndAccounteSeller(oneOp.get(), twoOp.get());
+            System.out.println(chatOp);
+            return chatOp.map(chat -> ResponseEntity.ok(new ErrorMesage(chat.getId().substring(2)))).orElseGet(() -> ResponseEntity.ok(new ErrorMesage("No hay chat entre ambas cuentas")));
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("Una de las cuentas no existe."));
     }
 
     @GetMapping(value = "all/messages/{idChat}")
@@ -57,7 +76,6 @@ public class ChatController {
         List<MessageRequest> result = new ArrayList<>();
         for (Message message :
                 messages) {
-            System.out.println(message);
             result.add(new MessageRequest(message.getAccount().getEmail(), null, message.getContentMessage()));
         }
 

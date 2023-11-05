@@ -6,8 +6,7 @@ import Error from './Error';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 
 function ModifyPost(props) {
 	const [name, setName] = useState();
@@ -143,15 +142,7 @@ function ModifyPost(props) {
 	return (
 		<>
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				< Loading />
 			) : (
 				<section className={styles.container}>
 					<form>

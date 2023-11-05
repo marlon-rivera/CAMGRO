@@ -4,8 +4,7 @@ import styles from './../styles/Catalog.module.css';
 import { useEffect, useState } from 'react';
 import Post from './Post';
 import { useNavigate } from 'react-router-dom';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading'
 
 function Catalog(props) {
 	const [posts, setPosts] = useState([]);
@@ -37,15 +36,7 @@ function Catalog(props) {
 	return (
 		<div>
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				<Loading />
 			) : (
 				<div className={styles.container}>
 					<h1 className={styles.textTitle}>Cátalogo</h1>

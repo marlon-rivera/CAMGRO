@@ -14,8 +14,7 @@ import {
 	updateRole
 } from '../redux/actions/actionsCreators';
 import PropTypes from 'prop-types';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 
 function Login(props) {
 	const [email, setEmail] = useState('');
@@ -88,15 +87,7 @@ function Login(props) {
 			}
 		>
 			{ready && (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				<Loading />
 			)}
 			<div className={styles.containerImg}>
 				<Link to='/'>

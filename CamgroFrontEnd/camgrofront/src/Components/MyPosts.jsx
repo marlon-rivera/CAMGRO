@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './Button';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 import Error from './Error'
 
 function MyPosts(props) {
@@ -76,15 +75,7 @@ function MyPosts(props) {
 		<div className={styles.container}>
 			{error && <Error message={errMess} func={()=>setError(false)} /> }
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				< Loading />
 			) : (
 				<>
 					<h1 className={styles.textTitle}> {props.role === 'ADMIN' ? 'Publicaciones' : 'Mis publicaciones'}</h1>

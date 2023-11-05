@@ -1,6 +1,7 @@
 package com.project.software.camgro.Camgro.controllers;
 
 import com.project.software.camgro.Camgro.domain.*;
+import com.project.software.camgro.Camgro.records.OwnerPostResponse;
 import com.project.software.camgro.Camgro.records.ResponseAllPosts;
 import com.project.software.camgro.Camgro.records.SavePostRequest;
 import com.project.software.camgro.Camgro.repositories.*;
@@ -193,7 +194,7 @@ public class PostController {
             Optional<PostAccounts> postAccountsOp = postAccountsRepository.findByPostsAccountsPrimaryKeyPostAndOwnTrue(postOp.get());
             if(postAccountsOp.isPresent()){
 
-                return ResponseEntity.ok(new ErrorMesage(postAccountsOp.get().getPostsAccountsPrimaryKey().getAccount().getEmail()));
+                return ResponseEntity.ok(new OwnerPostResponse(postAccountsOp.get().getPostsAccountsPrimaryKey().getAccount().getEmail(), postAccountsOp.get().getPostsAccountsPrimaryKey().getAccount().getPerson().getName()));
             }
             return ResponseEntity.badRequest().body(new ErrorMesage("No se ha encontrado el dueño."));
         }

@@ -6,8 +6,7 @@ import Error from './Error';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading'
 
 function AddPost(props) {
 	const [name, setName] = useState();
@@ -102,15 +101,7 @@ function AddPost(props) {
 			<form>
 				{error && <Error func={() => setError(false)} message={errMess} />}
 				{ready && (
-					<div className={stylesLoading.container}>
-						<BounceLoader
-							color={'#619002'}
-							loading={true}
-							className={stylesLoading.loading}
-							size={150}
-						/>
-						<p className={stylesLoading.p}>Cargando...</p>
-					</div>
+					<Loading />
 				)}
 				<h1 className={styles.textTitle}>Agregar Publicacion</h1>
 				<hr className={styles.line} />

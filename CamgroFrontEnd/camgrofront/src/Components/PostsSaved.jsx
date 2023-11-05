@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from './Button';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 
 function PostsSaved(props) {
 	const navigate = useNavigate();
@@ -46,15 +45,7 @@ function PostsSaved(props) {
 	return (
 		<div className={styles.container}>
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				< Loading />
 			) : (
 				<>
 					<h1 className={styles.textTitle}>Publicaciones guardadas</h1>

@@ -31,7 +31,6 @@ public class SecurityConf {
                       authRequest
                               .requestMatchers("/auth/**").permitAll()
                               .requestMatchers("/post/all").permitAll()
-                              .requestMatchers("/chat/*").permitAll()
                               .anyRequest().authenticated()
                         )
               .sessionManagement(sessionManager ->

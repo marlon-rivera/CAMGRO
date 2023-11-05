@@ -2,107 +2,168 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './../styles/Chat.module.css';
 import { images } from './Images';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
-import { useEffect, useState /* useState */ } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
+import Loading from './Loading';
 
 function Chat(props) {
-	const prueba = [1, 2, 3];
-	/* const [messages, setMessages] = useState([]) */
+	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState('');
-	const [emailPost, setEmailPost] = useState('');
-	let stompClient = null;
+	const [socket, setSocket] = useState(null);
+	const [chat, setChat] = useState(false);
+	let chatEndRef = useRef(null);
+	const [ready, setReady] = useState(false);
+
+	const scrollToBottom = () => {
+		chatEndRef.scrollIntoView({ behavior: 'smooth' });
+	};
 
 	useEffect(() => {
-		if (props.func) {
-			const getOwner = async () => {
-				const owner = await props.func();
-				setEmailPost(owner);
-			};
-			getOwner();
-		}
-		console.log(emailPost)
-		const Sock = new SockJS(
-			'http://localhost:8080/chat/' + props.email
-			);
-		stompClient = Stomp.over(Sock)
-		stompClient.connect({}, onConnected, onError)
+		console.log(props.email + ' - ' + props.emailPost);
+		fetch(`http://localhost:8080/chat/${props.email}/${props.emailPost}`, {
+			method: 'GET',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + props.token,
+			},
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				if (typeof r.message === 'string' && isNaN(r.message)) {
+					setChat(true);
+					setReady(true);
+				} else {
+					
+					fetch('http://localhost:8080/chat/all/messages/' + r.message, {
+						method: 'GET',
+						headers: {
+							'Access-Control-Allow-Origin': '*',
+							'Access-Control-Allow-Methods': '*',
+							'Access-Control-Allow-Headers': '*',
+							'Access-Control-Allow-Credentials': 'true',
+							'Content-Type': 'application/json',
+							Authorization: 'Bearer ' + props.token,
+						},
+					})
+						.then((r) => {
+							return r.json();
+						})
+						.then((r) => {
+							console.log(r);
+							setMessages(r);
+							setChat(true);
+							setReady(true);
+						});
+				}
+			});
 	}, []);
 
-	const onConnected = () => {
-		
-		/* stompClient.suscribe(
-			`user/ + ${props.emailPost ? props.emailPost : emailPost} + /private`,
-			onPrivateMessageReceived,
-		); */
+	useEffect(() => {
+		const newSocket = io('http://localhost:3001');
+		setSocket(newSocket);
+		return () => {
+			newSocket.disconnect();
+		};
+	}, [props.email]);
+
+	useEffect(() => {
+		if (socket === null) return;
+		socket.emit('addNewUser', props.email);
+		return () => {
+			socket.off('getOnlineUsers');
+		};
+	}, [socket]);
+
+	const sendMessage = () => {
+		if (socket === null) return;
+		messages.push({ from: props.email, message, to: props.emailPost });
+		setMessage('');
+		setMessages(messages);
+		socket.emit('sendMessage', {
+			from: props.email,
+			message,
+			to: props.emailPost,
+		});
 	};
 
-	/* const onPrivateMessageReceived = (payload) => {
-		console.log('Payload: ' + payload);
-		/* const payloadData = JSON.parse(payload);
-		console.log(payloadData);
-		messages.push(payloadData.content)
-		setMessages(messages) 
-	}; */
-
-	const onError = (err) => {
-		console.log('Error: ' + err);
-	};
-
-	const sendPrivateMessage = () => {
-		if (stompClient) {
-			const chatMessage = {
-				sender: props.email,
-				receiver: props.emailPost,
-				message,
-			};
-			stompClient.send('app/private-message', {}, JSON.stringify(chatMessage));
-			setMessage('');
+	useEffect(() => {
+		if (socket === null) return;
+		socket.on('getMessage', (res) => {
+			if (props.email !== res.to || res.from !== props.emailPost) return;
+			setMessages((prev) => [...prev, res]);
+		});
+		if(chat){
+			scrollToBottom();
 		}
-	};
+		return () => {
+			socket.off('getMessage');
+		};
+	});
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.chatContainer}>
-				<div className={styles.header}>
-					<img src={images.backChat} className={styles.back} />
-					<img src={images.userInv} className={styles.imgUser} />
-					<p className={styles.user}>Marlon Rivera</p>
-				</div>
-				<div className={styles.chat}>
-					{prueba.map((m, index) => {
-						return (
-							<>
-								<div className={styles.message}>
-									<p>
-										Soy el mensaje y estoy supremamente largo como para no caber
-										en la pantalla
-									</p>
-									<div className={styles.triangleMessage}></div>
-								</div>
-								<div className={styles.messageOther}>
-									<p>
-										Soy el mensaje del otro que sigue siendo mucho mas largo
-										porque me gusta ser bastante largo
-									</p>{' '}
-									<div className={styles.triangleMessageOther}></div>
-								</div>
-							</>
-						);
-					})}
-				</div>
-				<div className={styles.footer}>
-					<div className={styles.input}>
-						<input type='text' className={styles.inputMess} />
-						<img
-							src={images.send}
-							className={styles.send}
-							onClick={sendPrivateMessage}
-						/>
+		<>
+			{!ready && <Loading /> }
+
+			{chat && (
+				<div className={styles.container}>
+					<div className={styles.chatContainer}>
+						<div className={styles.header}>
+							<img
+								onClick={props.setChat}
+								src={images.backChat}
+								className={styles.back}
+							/>
+							<img src={images.userInv} className={styles.imgUser} />
+							<p className={styles.user}>{props.nameOwnerPost}</p>
+						</div>
+						<div className={styles.chat} id='chat'>
+							{messages.map((m, index) => {
+								if (m.from === props.email) {
+									return (
+										<div key={index} className={styles.message}>
+											<p>{m.message}</p>
+											<div className={styles.triangleMessage}></div>
+										</div>
+									);
+								} else {
+									return (
+										<div key={index} className={styles.messageOther}>
+											<p>{m.message}</p>
+											<div className={styles.triangleMessageOther}></div>
+										</div>
+									);
+								}
+							})}
+							<div
+								style={{ float: 'left', clear: 'both' }}
+								ref={(el) => {
+									chatEndRef = el;
+								}}
+							></div>
+						</div>
+						<div className={styles.footer}>
+							<div className={styles.input}>
+								<input
+									type='text'
+									className={styles.inputMess}
+									value={message}
+									onChange={(e) => setMessage(e.target.value)}
+								/>
+								<img
+									src={images.send}
+									className={styles.send}
+									onClick={() => sendMessage()}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 }
 
@@ -118,6 +179,8 @@ Chat.propTypes = {
 	token: PropTypes.string,
 	emailPost: PropTypes.string,
 	func: PropTypes.func,
+	nameOwnerPost: PropTypes.string,
+	setChat: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(Chat);

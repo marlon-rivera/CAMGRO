@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Error from './Error';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 
 function Modify(props) {
 	const navigate = useNavigate();
@@ -112,15 +111,7 @@ function Modify(props) {
 		<div className={Styles.containerFormRegister}>
 			{err && <Error message={errMess} func={() => setErr(!err)} />}
 			{ready && (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				<Loading />
 			)}
 			<form>
 				<h1 className={Styles.textTitle}>Modificar cuenta</h1>

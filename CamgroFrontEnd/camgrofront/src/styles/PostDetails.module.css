@@ -31,6 +31,7 @@
     align-items: center;
     position: relative;
     margin-top: 15px;
+    z-index: 1;
 }
 .savePost, .chatMessage{
     font-family: 'Century Gothic';

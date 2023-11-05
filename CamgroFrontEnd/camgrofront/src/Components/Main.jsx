@@ -1,7 +1,6 @@
 import styles from './../styles/Main.module.css';
 import Carrousel from './Carrousel';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
+import Loading from './Loading';
 import { useState, useEffect } from 'react';
 
 
@@ -34,15 +33,7 @@ function Main(props) {
 	return (
 		<div>
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				< Loading />
 			) : (
 				<main className={styles.main}>
 					<div className={styles.info}>

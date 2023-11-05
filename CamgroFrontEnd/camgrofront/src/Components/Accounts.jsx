@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { images } from './Images';
 import Button from './Button';
-import { BounceLoader } from 'react-spinners';
-import stylesLoading from './../styles/Loading.module.css';
 import Error from './Error';
+import Loading from './Loading'
 
 function Accounts(props) {
 	const navigate = useNavigate();
@@ -70,15 +69,7 @@ function Accounts(props) {
 		<div className={styles.container}>
 			{error && <Error message={errMess} func={()=>setError(false)} /> }
 			{!ready ? (
-				<div className={stylesLoading.container}>
-					<BounceLoader
-						color={'#619002'}
-						loading={true}
-						className={stylesLoading.loading}
-						size={150}
-					/>
-					<p className={stylesLoading.p}>Cargando...</p>
-				</div>
+				<Loading />
 			) : (
 				<>
 					<h1 className={styles.textTitle}>Cuentas</h1>
