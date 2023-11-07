@@ -9,17 +9,13 @@ import com.project.software.camgro.Camgro.records.MessageRequest;
 import com.project.software.camgro.Camgro.repositories.AccountRepository;
 import com.project.software.camgro.Camgro.repositories.ChatRepository;
 import com.project.software.camgro.Camgro.repositories.MessageRepository;
+import com.project.software.camgro.Camgro.services.ChatService;
+import com.project.software.camgro.Camgro.services.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +28,8 @@ public class ChatController {
     private final AccountRepository accountRepository;
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
+    private final MessageService messageService;
+    private final ChatService chatService;
 
     @GetMapping(value = "all/{email}")
     public ResponseEntity<?> getAllChatsByAccount(@PathVariable("email") String email){
@@ -81,6 +79,27 @@ public class ChatController {
 
         return ResponseEntity.ok(result);
 
+    }
+
+    @PostMapping("send/message")
+    public ResponseEntity<?> sendMessage(@RequestBody MessageRequest messageRequest){
+        Optional<Account> accountFrom = accountRepository.findAccountByEmail(messageRequest.from());
+        Optional<Account> accountTo = accountRepository.findAccountByEmail(messageRequest.to());
+        if(accountTo.isPresent() && accountFrom.isPresent()){
+            Optional<Chat> chatOp = chatRepository.findChatByAccountBuyerAndAccounteSeller(accountTo.get(), accountFrom.get());
+            if(chatOp.isPresent()){
+                System.out.println(messageService.getNewID());
+                Message message = new Message(messageService.getNewID(), chatOp.get(), messageRequest.message(), LocalDateTime.now(), accountFrom.get());
+                messageRepository.save(message);
+            }else{
+                Chat chat = new Chat(chatService.getNewID(), accountFrom.get(), accountTo.get(), LocalDateTime.now());
+                chatRepository.save(chat);
+                Message message = new Message(messageService.getNewID(), chat, messageRequest.message(), LocalDateTime.now(), accountFrom.get());
+                messageRepository.save(message);
+            }
+            return ResponseEntity.ok(new ErrorMesage("Mensaje mandadado con exito."));
+        }
+        return ResponseEntity.badRequest().body(new ErrorMesage("No se encontro una de las dos cuentas."));
     }
 
 }

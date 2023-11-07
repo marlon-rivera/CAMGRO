@@ -19,7 +19,8 @@ function Chat(props) {
 	};
 
 	useEffect(() => {
-		console.log(props.email + ' - ' + props.emailPost);
+		setReady(false)
+		setChat(null)
 		fetch(`http://localhost:8080/chat/${props.email}/${props.emailPost}`, {
 			method: 'GET',
 			headers: {
@@ -53,14 +54,13 @@ function Chat(props) {
 							return r.json();
 						})
 						.then((r) => {
-							console.log(r);
 							setMessages(r);
 							setChat(true);
 							setReady(true);
 						});
 				}
 			});
-	}, []);
+	}, [props.emailPost]);
 
 	useEffect(() => {
 		const newSocket = io('http://localhost:3001');
@@ -83,6 +83,25 @@ function Chat(props) {
 		messages.push({ from: props.email, message, to: props.emailPost });
 		setMessage('');
 		setMessages(messages);
+		fetch('http://localhost:8080/chat/send/message', {
+			method: 'POST',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + props.token,
+			},
+			body: JSON.stringify({from: props.email, message, to: props.emailPost })
+		})
+			.then((r) => r.json())
+			.then((r) => {
+				console.log(r)
+			})
+			.catch(err => {
+				console.log("Dio un error al enviar el mensaje: " + err)
+			});
 		socket.emit('sendMessage', {
 			from: props.email,
 			message,

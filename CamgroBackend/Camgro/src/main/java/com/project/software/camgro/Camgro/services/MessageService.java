@@ -19,17 +19,17 @@ public class MessageService {
     private String id;
 
     public String getNewID(){
-        Optional<Message> message = messageRepository.findTopByOrderByIdDesc();
+        Optional<Message> message = messageRepository.findLastRecord();
         if(message.isPresent()){
             id = message.get().getId();
-            number = Integer.parseInt(id.substring(2));
+            number = Integer.parseInt(id.substring(1));
         }else {
             number = 0;
         }
+        System.out.println(number);
         number++;
         id = "M" + number;
+        System.out.println(id);
         return id;
     }
-
-
 }

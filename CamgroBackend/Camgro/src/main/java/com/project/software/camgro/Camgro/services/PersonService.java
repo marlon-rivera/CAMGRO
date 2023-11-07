@@ -17,7 +17,7 @@ public class PersonService {
     private PersonRepository personRepository;
 
     public String getNewId(){
-        Optional<Person> person = personRepository.findTopByOrderByIdDesc();
+        Optional<Person> person = personRepository.findLastRecord();
         int number;
         String id;
         if(person.isPresent()){

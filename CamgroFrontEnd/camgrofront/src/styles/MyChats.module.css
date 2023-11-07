@@ -1,13 +1,10 @@
 .container {
-	position: absolute;
-	top: 50%;
-	left: 30%;
-	transform: translate(-50%, -50%);
-	width: 45%;
-	height: 75vh;
-	margin-top: 5vh;
-	display: flex;
-	flex-direction: column;
+	width: 90%;
+    height: 70vh;
+    margin-top:  5vh;
+    margin-bottom:  5vh;
+    margin-left:  5vw;
+    margin-right:  5vw;
 }
 .textTitle {
 	font-size: 2.5vw;
@@ -17,14 +14,18 @@
 	color: white;
 }
 .chatComponent {
-	position: absolute;
-	top: 5%;
-	left: 1100px;
+	width: 100%;
+}
+.containerChatsAndChat{
+	
+}
+.aux{
+	top: -15px;
 }
 .containerChats {
-	margin: auto;
 	margin-top: 40px;
-	width: 100%;
+	width: 45vw;
+	flex-direction: column;
 	display: flex;
 	justify-content: center;
 	align-items: center;

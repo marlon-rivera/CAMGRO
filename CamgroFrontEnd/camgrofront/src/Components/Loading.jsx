@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 function Loading() {
 
-    const text = "Cargando..."; // El texto que deseas mostrar
+    const text = "Cargando...";
     const [displayText, setDisplayText] = useState('');
   
     useEffect(() => {
@@ -14,9 +14,9 @@ function Loading() {
           setDisplayText(text.substring(0, i));
           i++;
         } else {
-          i = 0; // Reiniciar el contador cuando se haya mostrado completamente el texto
+          i = 1;
         }
-      }, 100); // Intervalo de tiempo en milisegundos entre cada letra
+      }, 100);
   
       return () => clearInterval(interval);
     }, [text]);

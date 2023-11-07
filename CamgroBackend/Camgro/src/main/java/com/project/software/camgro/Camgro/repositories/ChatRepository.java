@@ -13,7 +13,8 @@ public interface ChatRepository extends JpaRepository<Chat, String> {
 
     List<Chat> findAllByAccountBuyerOrAccountSeller(Account account, Account account1);
 
-    Optional<Chat> findTopByOrderByIdDesc();
+    @Query("SELECT ch FROM Chat ch WHERE CAST(SUBSTRING(ch.id, 3)  AS INTEGER) = (SELECT MAX(CAST(SUBSTRING(ch2.id, 3) AS int)) FROM Chat ch2)")
+    Optional<Chat> findLastRecord();
 
     @Query("SELECT c FROM Chat c WHERE (c.accountSeller = :account1 AND c.accountBuyer = :account2) OR (c.accountSeller = :account2 AND c.accountBuyer = :account1)")
     Optional<Chat> findChatByAccountBuyerAndAccounteSeller(Account account1, Account account2);

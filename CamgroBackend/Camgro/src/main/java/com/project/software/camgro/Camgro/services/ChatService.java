@@ -19,7 +19,7 @@ public class ChatService {
     private String id;
 
     public String getNewID(){
-        Optional<Chat> chat = chatRepository.findTopByOrderByIdDesc();
+        Optional<Chat> chat = chatRepository.findLastRecord();
         if(chat.isPresent()){
             id = chat.get().getId();
             number = Integer.parseInt(id.substring(2));

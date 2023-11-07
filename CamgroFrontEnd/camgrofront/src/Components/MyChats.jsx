@@ -9,41 +9,47 @@ import { useNavigate } from 'react-router-dom';
 
 function MyChats(props) {
 	const [ready, setReady] = useState(false);
-	const [chats, setChats] = useState([])
-	const [chatBool, setChatBool] = useState(false)
-	const [chatSelected, setChatSelected] = useState()
+	const [chats, setChats] = useState([]);
+	const [chatBool, setChatBool] = useState(false);
+	const [chatSelected, setChatSelected] = useState();
 
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		if(!props.token){
-			navigate('/login')
+		if (!props.token) {
+			navigate('/login');
 		}
 		fetch('http://localhost:8080/chat/all/' + props.email, {
-						method: 'GET',
-						headers: {
-							'Access-Control-Allow-Origin': '*',
-							'Access-Control-Allow-Methods': '*',
-							'Access-Control-Allow-Headers': '*',
-							'Access-Control-Allow-Credentials': 'true',
-							'Content-Type': 'application/json',
-							Authorization: 'Bearer ' + props.token,
-						},
-					})
-						.then((r) => {
-							return r.json();
-						})
-						.then((r) => {
-							setChats(r)
-							console.log(r)
-							setReady(true)
-						});
-	}, [])
-	
+			method: 'GET',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Headers': '*',
+				'Access-Control-Allow-Credentials': 'true',
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + props.token,
+			},
+		})
+			.then((r) => {
+				return r.json();
+			})
+			.then((r) => {
+				setChats(r);
+				setReady(true);
+			});
+	}, [chatSelected]);
+
 	const openChat = (chat) => {
-		setChatSelected(chat)
-		setChatBool(true)
-	}
+		setChatBool(false);
+		if (chatSelected) {
+			console.log('Entre');
+			setChatSelected(chat);
+			setChatBool(true);
+		} else {
+			setChatSelected(chat);
+			setChatBool(true);
+		}
+	};
 
 	return (
 		<>
@@ -52,13 +58,17 @@ function MyChats(props) {
 			) : (
 				<div className={styles.container}>
 					<h1 className={styles.textTitle}>Mensajes</h1>
-					<div>
+					<div className={styles.containerChatsAndChat}>
 						<div className={styles.containerChats}>
 							<div className={styles.chats}>
 								{chats.map((c, index) => {
 									return (
 										<>
-											<div key={index} className={styles.chat} onClick={() => openChat(c)}>
+											<div
+												key={index}
+												className={styles.chat}
+												onClick={() => openChat(c)}
+											>
 												<div className={styles.img}>
 													<img src={images.userInv} alt='' />
 												</div>
@@ -69,7 +79,10 @@ function MyChats(props) {
 													</div>
 													<div>
 														<span className={styles.span}>
-															{c.lastMessage.split(' ').length > 5 ? c.lastMessage.split(' ').slice(0,5).join(' ') : c.lastMessage} ...
+															{c.lastMessage.split(' ').length > 5
+																? c.lastMessage.split(' ').slice(0, 5).join(' ')
+																: c.lastMessage}{' '}
+															...
 														</span>{' '}
 													</div>
 												</div>
@@ -80,9 +93,18 @@ function MyChats(props) {
 								})}
 							</div>
 						</div>
-						<div className={styles.chatComponent}>
-							{chatBool && <Chat emailPost={chatSelected.email} nameOwnerPost={chatSelected.personName} setChat={() => {setChatBool(!chatBool)}} />}
-							
+						<div className={styles.aux}>
+							<div className={styles.chatComponent}>
+								{chatBool && (
+									<Chat
+										emailPost={chatSelected.email}
+										nameOwnerPost={chatSelected.personName}
+										setChat={() => {
+											setChatBool(!chatBool);
+										}}
+									/>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>

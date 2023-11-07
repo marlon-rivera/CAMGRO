@@ -17,7 +17,7 @@ public class AccountService {
     private String id;
 
     public String getNewID(){
-        Optional<Account> account = accountRepository.findTopByOrderByIdDesc();
+        Optional<Account> account = accountRepository.findLastRecord();
         if(account.isPresent()){
             id = account.get().getId();
             number = Integer.parseInt(id.substring(2));
