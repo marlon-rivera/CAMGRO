@@ -1,0 +1,42 @@
+[
+	{
+		"nombre": "Kilogramo (kg)",
+		"equivalencia": "1 kilogramo = 1000 gramos"
+	},
+	{
+		"nombre": "Gramo (g)",
+		"equivalencia": "1 gramo = 0,001 kilogramos"
+	},
+	{
+		"nombre": "Tonelada métrica (t)",
+		"equivalencia": "1 tonelada métrica = 1000 kilogramos"
+	},
+	{
+		"nombre": "Libra (lb)",
+		"equivalencia": "1 libra = 0,45359237 kilogramos"
+	},
+	{
+		"nombre": "Onza (oz)",
+		"equivalencia": "1 onza = 28,349523125 gramos"
+	},
+	{
+		"nombre": "Quintal (q)",
+		"equivalencia": "1 quintal = 46,0430625 kilogramos"
+	},
+	{
+		"nombre": "Arroba",
+		"equivalencia": "1 arroba = 12,5 kilogramos = 25 libras"
+	},
+	{
+		"nombre": "Fardo",
+		"equivalencia": "1 fardo = 50 arrobas = 625 kilogramos"
+	},
+	{
+		"nombre": "Costal",
+		"equivalencia": "1 costal = 10 arrobas = 125 kilogramos"
+	},
+	{
+		"nombre": "Canasta",
+		"equivalencia": "1 canasta = 2 arrobas = 25 kilogramos"
+	}
+]

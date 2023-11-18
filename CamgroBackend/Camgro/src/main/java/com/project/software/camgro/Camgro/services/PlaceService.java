@@ -15,7 +15,7 @@ public class PlaceService {
     private PlaceRepository placeRepository;
 
     public String getNewId(){
-        Optional<Place> place = placeRepository.findTopByOrderByIdPlaceDesc();
+        Optional<Place> place = placeRepository.findLastRecord();
         String id;
         int number;
         if(place.isPresent()){

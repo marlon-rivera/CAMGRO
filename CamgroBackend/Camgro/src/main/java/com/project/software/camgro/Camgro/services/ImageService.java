@@ -16,7 +16,7 @@ public class ImageService {
     private ImageRepository imageRepository;
 
     public String getNewId(){
-        Optional<Image> image = imageRepository.findTopByOrderByIdImageDesc();
+        Optional<Image> image = imageRepository.findLastRecord();
         int number;
         String id;
         if(image.isPresent()){

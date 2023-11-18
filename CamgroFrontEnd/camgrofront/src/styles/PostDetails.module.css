@@ -1,6 +1,5 @@
 .container{
     width: 90vw;
-    height: 70vh;
     margin-top:  8vh;
     margin-bottom:  5vh;
     margin-left:  5vw;
@@ -20,6 +19,8 @@
     border-radius: 10%/10%;
     background-color: rgba(255,255,255,0.2);
     padding: 20px;
+    width: 650px;
+    margin-top: 20px;
 }
 .image{
     width: 25vw;
@@ -52,7 +53,8 @@
     font-family: 'Century Gothic';
     color: white;
     margin: 10px;
-    width: 300px;
+    width: 100%;
+    flex-wrap: nowrap;
     font-size: 18px;
 }
 

@@ -102,7 +102,7 @@ function MyPosts(props) {
 											}}
 										>
 											<span className={styles.title}>
-												Titulo: {p.postTitle}
+												{p.postTitle}
 											</span>
 											<span className={styles.price}>
 												Precio: {p.priceProduct}

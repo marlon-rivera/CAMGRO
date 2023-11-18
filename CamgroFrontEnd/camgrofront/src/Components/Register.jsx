@@ -82,8 +82,11 @@ function Register(props) {
 	loadPlaces(setPlaces);
 
 	const handleSumbitPhone = (e) => {
-		if (e.target.value.length <= 10) {
-			setPhone(e.target.value);
+		
+		if (!isNaN(e.target.value)) {
+			if (e.target.value.length <= 10) {
+				setPhone(e.target.value);
+			}
 		}
 	};
 
@@ -96,8 +99,10 @@ function Register(props) {
 			address &&
 			email &&
 			secondPassword &&
-			department &&
-			city &&
+			department !== 'Seleccione una opción' &&
+			city !== 'Seleccione una opción' &&
+			city !== '' &&
+			department !== '' &&
 			secondPassword === password
 		);
 	};
@@ -113,9 +118,7 @@ function Register(props) {
 					: Styles.containerFormRegister
 			}
 		>
-			{ready && (
-				< Loading />
-			)}
+			{ready && <Loading />}
 			<form>
 				<h1 className={Styles.textTitle}>Registrarse</h1>
 				<hr className={Styles.line} />
@@ -155,7 +158,7 @@ function Register(props) {
 								className={
 									!phone && phoneTouch ? Styles.inputRed : Styles.input
 								}
-								type='number'
+								type='text'
 								value={phone}
 								onBlur={() => {
 									setPhoneTouch(true);
@@ -215,6 +218,7 @@ function Register(props) {
 								}}
 								required
 							>
+								<option value={null} >Seleccione una opción</option>
 								{places.length > 0 &&
 									places.map((p) => {
 										return (
@@ -236,6 +240,7 @@ function Register(props) {
 								onChange={(e) => setCity(e.target.value)}
 								required
 							>
+								<option value={null} >Seleccione una opción</option>
 								{cities.length > 0 &&
 									cities.map((c, index) => {
 										return (

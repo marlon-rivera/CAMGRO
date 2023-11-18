@@ -11,7 +11,7 @@ function Post(props) {
 					src={'data:image/jpeg;base64,' + props.post.image}
 					className={styles.image}
 				/>
-				<span className={styles.title}>Titulo: {props.post.postTitle}</span>
+				<span className={styles.title}>{props.post.postTitle}</span>
 				<span className={styles.price}>Precio: {props.post.priceProduct}</span>
 			</article>
 		</Link>

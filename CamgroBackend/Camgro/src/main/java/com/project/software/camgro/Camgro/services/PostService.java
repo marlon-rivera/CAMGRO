@@ -15,7 +15,7 @@ public class PostService {
     private PostRepository postRepository;
 
     public String getNewId(){
-        Optional<Post> post = postRepository.findTopByOrderByIdPostDesc();
+        Optional<Post> post = postRepository.findLastRecord();
         int number;
         String id;
         if(post.isPresent()){

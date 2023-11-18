@@ -7,6 +7,7 @@ import { images } from './Images';
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+import Loading from './Loading'
 
 function RestorePassword(props) {
 	const navigate = useNavigate();
@@ -23,9 +24,11 @@ function RestorePassword(props) {
 	const [nSPassword, setNSPassword] = useState('');
 	const [error, setError] = useState(false);
 	const [errMessage, setErrMessage] = useState('');
+	const [ready, setReady] = useState(true);
 
 	const handleSumbitEmail = (e) => {
 		e.preventDefault();
+		setReady(false)
 		const data = {
 			data: email,
 		};
@@ -38,6 +41,7 @@ function RestorePassword(props) {
 		})
 			.then((r) => r.json())
 			.then((r) => {
+				setReady(true)
 				if (r.message) {
 					setError(true)
 					setErrMessage(r.message)
@@ -53,6 +57,7 @@ function RestorePassword(props) {
 
 	const handleSumbitCode = (e) => {
 		e.preventDefault();
+		setReady(false)
 		const data = {
 			data: code,
 		};
@@ -65,6 +70,7 @@ function RestorePassword(props) {
 		})
 			.then((r) => r.json())
 			.then((r) => {
+				setReady(true)
 				if (r.message) {
 					setError(true)
 					setErrMessage(r.message)
@@ -80,6 +86,7 @@ function RestorePassword(props) {
 
 	const handleSumbitPassword = (e) => {
 		e.preventDefault();
+		setReady(false)
 		const data = {
 			data: nPassword,
 		};
@@ -92,6 +99,7 @@ function RestorePassword(props) {
 		})
 			.then((r) => r.json())
 			.then((r) => {
+				setReady(true)
 				if (r.message) {
 					setError(true)
 					setErrMessage(r.message)
@@ -131,6 +139,7 @@ function RestorePassword(props) {
 
 	return (
 		<section className={error ? `${styles.containerRestorePassword} ${styles.disabled}` : `${styles.containerRestorePassword}`}>
+			{!ready && <Loading />}
 			<div className={styles.containerImg}>
 				<Link to='/'>
 					<img className={styles.img} src={images.logo} alt='CAMGRO' />

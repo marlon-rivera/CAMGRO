@@ -29,7 +29,7 @@ public class RecoverPasswordService {
             throw new UsernameNotFoundException("No hay una cuenta registrada con el email ingresado.");
         }
         code = generateCode();
-        dateExpiration = LocalDateTime.now().plusMinutes(1);
+        dateExpiration = LocalDateTime.now().plusMinutes(10);
         return code;
     }
 

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from './Loading'
+import units from './../Static/units.json'
 
 function AddPost(props) {
 	const [name, setName] = useState();
@@ -15,7 +16,6 @@ function AddPost(props) {
 	const [desTouch, setDesTouch] = useState(false);
 	const [price, setPrice] = useState();
 	const [priceTouch, setPriceTouch] = useState(false);
-	const [units, setUnits] = useState([]);
 	const [unitsTouch, setUnitsTouch] = useState(false);
 	const [unit, setUnit] = useState();
 	const [postDate, setPostDate] = useState();
@@ -39,18 +39,21 @@ function AddPost(props) {
 		}
 	}, []);
 
-	loadUnits(setUnits);
-
 	const verifyAllInputsFull = () => {
+		console.log(postState)
 		return (
 			image &&
 			name &&
 			description &&
 			price &&
-			unit &&
+			unit !== 'Seleccione una opción' &&
 			postDate &&
 			harvestDate &&
 			quantity &&
+			postState !== 'Seleccione una opción'
+			&&
+			postState !== ''
+			&&
 			postState
 		);
 	};
@@ -167,15 +170,17 @@ function AddPost(props) {
 								value={unit}
 								onBlur={() => setUnitsTouch(true)}
 								onChange={(e) => {
+									console.log(e.target.value)
 									setUnit(e.target.value);
 								}}
 								required
 							>
+								<option value={null}>Seleccione una opción</option>
 								{units.length > 0 &&
-									units.map((p) => {
+									units.map((u, i) => {
 										return (
-											<option key={p.id} value={p.departamento}>
-												{p.departamento}
+											<option key={i} value={u.nombre}>
+												{u.nombre}
 											</option>
 										);
 									})}
@@ -243,6 +248,7 @@ function AddPost(props) {
 								}}
 								required
 							>
+								<option value={null}>Seleccione una opción</option>
 								<option value='Proxima'>Proxima</option>
 								<option value='Activa'>Activa</option>
 
@@ -262,14 +268,6 @@ function AddPost(props) {
 			</form>
 		</section>
 	);
-}
-
-async function loadUnits(call) {
-	await fetch(
-		'https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json',
-	)
-		.then((r) => r.json())
-		.then((r) => call(r));
 }
 
 function mapStateToProps(state) {

@@ -3,14 +3,14 @@
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
-	margin-right: 50px;
+	margin-right: 15px;
 	margin-left: 15px;
 	width: fit-content;
 }
 
 .input {
 	width: 32vw;
-	height: 7vh;
+	height: 45px;
 	border-radius: 30px 0px 0px 30px;
 	border-color: transparent;
 	font-family: 'Century Gothic';

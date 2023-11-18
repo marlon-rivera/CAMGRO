@@ -94,7 +94,7 @@ function PostDetails(props) {
 			.then((r) => r.json())
 			.then((r) => {
 				setOwnerPost(r.email);
-				setName(r.name)
+				setName(r.name);
 			});
 	};
 
@@ -103,9 +103,15 @@ function PostDetails(props) {
 	return (
 		<div className={styles.container}>
 			{error && <Error message={errMess} func={() => setError(false)} />}
-			{chat && <Chat emailPost={ownerPost} nameOwnerPost={name} setChat={() => setChat(!chat)} />}
+			{chat && (
+				<Chat
+					emailPost={ownerPost}
+					nameOwnerPost={name}
+					setChat={() => setChat(!chat)}
+				/>
+			)}
 			{!ready ? (
-				< Loading />
+				<Loading />
 			) : (
 				<>
 					<div className={styles.containerImage}>
@@ -115,20 +121,22 @@ function PostDetails(props) {
 								className={styles.image}
 							/>
 						</div>
-						<div className={styles.save}>
-							<span className={styles.savePost}>Guardar publicacion:</span>
-							<Button
-								func={savePost}
-								path={id}
-								source={images.saveInv}
-								sourceInv={images.save}
-							/>
-						</div>
+						{ownerPost !== props.email && (
+							<div className={styles.save}>
+								<span className={styles.savePost}>Guardar publicacion:</span>
+								<Button
+									func={savePost}
+									path={id}
+									source={images.saveInv}
+									sourceInv={images.save}
+								/>
+							</div>
+						)}
 					</div>
 					<div className={styles.containerInfo}>
 						<div className={styles.infoPost}>
 							<span className={`${styles.label} ${styles.title}`}>
-								Titulo: {data && data.postTitle}
+								{data && data.postTitle}
 							</span>
 							<span className={`${styles.label} ${styles.price}`}>
 								Precio: {data && data.priceProduct}
@@ -159,14 +167,18 @@ function PostDetails(props) {
 							</span>
 							<hr className={styles.line} />
 						</div>
-						<div className={styles.chat}>
-							<span className={styles.chatMessage}>Chat con el vendedor:</span>
-							<Button
-								source={images.chatInv}
-								sourceInv={images.chat}
-								func={() => setChat(!chat)}
-							/>
-						</div>
+						{ownerPost !== props.email && (
+							<div className={styles.chat}>
+								<span className={styles.chatMessage}>
+									Chat con el vendedor:
+								</span>
+								<Button
+									source={images.chatInv}
+									sourceInv={images.chat}
+									func={() => setChat(!chat)}
+								/>
+							</div>
+						)}
 					</div>
 				</>
 			)}
