@@ -8,6 +8,7 @@ class CamgroApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

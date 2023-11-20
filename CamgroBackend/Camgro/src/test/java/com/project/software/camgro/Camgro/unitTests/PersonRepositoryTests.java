@@ -1,4 +1,4 @@
-package com.project.software.camgro.Camgro;
+package com.project.software.camgro.Camgro.unitTests;
 
 import com.project.software.camgro.Camgro.domain.Person;
 import com.project.software.camgro.Camgro.repositories.PersonRepository;

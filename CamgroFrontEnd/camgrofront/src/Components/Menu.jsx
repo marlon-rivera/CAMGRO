@@ -9,6 +9,7 @@ import {
 	updateInfoPerson,
 } from '../redux/actions/actionsCreators';
 import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
 
 function Menu(props) {
 	function resetData() {
@@ -18,9 +19,37 @@ function Menu(props) {
 		props.updateInfoPerson(null);
 		props.setMenu(false);
 	}
-	console.log(props.role)
+	
+	const ref = useRef(null);
+
+	useEffect(() => {
+		const unlisten = () => {
+			props.setMenu(false)
+		}
+
+		window.addEventListener('popstate', unlisten)
+
+		return () => {
+			window.removeEventListener('popstate', unlisten)
+		}
+	}, [])
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside)
+
+		return () => {
+			document.addEventListener('mousedown', handleClickOutside)
+		}
+	},[])
+
+	const handleClickOutside = (e) => {
+		if(ref.current && !ref.current.contains(e.target)){
+			props.setMenu(false)
+		}
+	}
+
 	return (
-		<div className={ props.role === 'ADMIN' ? styles.menuAdmin : styles.containerMenu}>
+		<div ref={ref} className={ props.role === 'ADMIN' ? styles.menuAdmin : styles.containerMenu}>
 			{props.role === 'ADMIN' ? (
 				<ul className={styles.options}>
 				<li>

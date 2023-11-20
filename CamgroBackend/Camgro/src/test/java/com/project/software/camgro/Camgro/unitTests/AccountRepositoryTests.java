@@ -1,4 +1,4 @@
-package com.project.software.camgro.Camgro;
+package com.project.software.camgro.Camgro.unitTests;
 
 import com.project.software.camgro.Camgro.domain.Account;
 import com.project.software.camgro.Camgro.domain.Person;

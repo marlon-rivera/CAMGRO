@@ -100,6 +100,7 @@ function ModifyPost(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setReady(false)
 		const formData = new FormData();
 		formData.append('name', name);
 		formData.append('description', description);
@@ -131,11 +132,13 @@ function ModifyPost(props) {
 				setErrMess(r.message);
 				setError(true);
 				setModify(!modify);
+				setReady(true)
 			})
 			.catch((err) => {
 				console.log(err);
 				setErrMess('No se pudo guardar la publicacion.');
 				setError(true);
+				setReady(true)
 			});
 	};
 
